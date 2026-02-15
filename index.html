@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynasty Warrior 5 - Ciawi Mode (Sample)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main id="app">
+      <section id="opening-screen" class="screen active">
+        <video id="opening-video" playsinline>
+          <source src="Opening.mp4" type="video/mp4" />
+        </video>
+        <div class="overlay-hint">Klik di mana saja / tekan tombol apa saja untuk skip opening</div>
+      </section>
+
+      <section id="menu-screen" class="screen">
+        <h1>Dynasty Warrior 5: Ciawi Mode</h1>
+        <p class="subtitle">Pilih mode permainan:</p>
+        <div class="menu-buttons">
+          <button id="btn-musou" class="blink">⚔ Musou Mode</button>
+          <button id="btn-encyclopedia" class="blink">📜 Encyclopedia</button>
+        </div>
+      </section>
+
+      <section id="musou-screen" class="screen panel-screen">
+        <h2>Musou Mode</h2>
+        <p>Pilih pertempuran:</p>
+        <div class="battle-list">
+          <button id="btn-ciawi">1. Pertempuran Ciawi</button>
+          <button id="btn-hutan" disabled>2. Ekspedisi Hutan Selatan (Terkunci)</button>
+        </div>
+        <button class="back" data-back="menu-screen">← Kembali</button>
+      </section>
+
+      <section id="encyclopedia-screen" class="screen panel-screen">
+        <h2>Encyclopedia</h2>
+        <p>Catatan tokoh dan pertempuran akan muncul di sini.</p>
+        <p class="muted">(Contoh awal: menu ini sudah aktif dan bisa dipilih dari halaman utama.)</p>
+        <button class="back" data-back="menu-screen">← Kembali</button>
+      </section>
+
+      <section id="battle-screen" class="screen">
+        <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran Ciawi" />
+        <div class="battle-topbar">
+          <div class="hp-block left">
+            <div class="name">Zhào Bóyán Shànbà</div>
+            <div class="hp-bar"><div id="hero-hp" class="hp-fill"></div></div>
+          </div>
+          <div class="hp-block right">
+            <div class="name">Yuán Qīguó</div>
+            <div class="hp-bar"><div id="enemy-hp" class="hp-fill enemy"></div></div>
+          </div>
+        </div>
+
+        <img id="hero-idle" class="idle left" src="Musou_mode/Karakter1/Karakter1/Karakter1.png" alt="Hero" />
+        <img id="enemy-idle" class="idle right" src="Musou_mode/Musuh1/Musuh1.png" alt="Enemy" />
+
+        <img id="hero-reaction" class="reaction hero" src="Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png" alt="Hero reaction" />
+        <img id="enemy-reaction" class="reaction enemy" src="Musou_mode/Musuh1/Menyerang.png" alt="Enemy reaction" />
+        <img id="attack-effect" class="effect" src="effects/api.png" alt="Attack effect" />
+
+        <div id="battle-ui" class="battle-ui">
+          <h3 id="question-text">Pertanyaan akan muncul di sini...</h3>
+          <div id="choices" class="choices"></div>
+          <p id="battle-log">Jawab pertanyaan dengan benar untuk menyerang!</p>
+        </div>
+      </section>
+
+      <section id="reward-screen" class="screen">
+        <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah Musuh 1" />
+        <div class="reward-dialog">
+          <h3>Kakek Penjaga Arsip</h3>
+          <p>
+            "Zhào Bóyán Shànbà, terimalah <strong>Buku Gambar Kuno Ciawi</strong> ini. Pada tahun 214 M,
+            benda seperti ini sangat langka—hanya penulis istana dan pemikir besar yang memilikinya.
+            Dengan buku ini, strategi, peta, dan kenangan kemenanganmu bisa diwariskan untuk generasi
+            berikutnya."
+          </p>
+          <button class="back" data-back="menu-screen">Kembali ke Menu</button>
+        </div>
+      </section>
+    </main>
+
+    <audio id="bgm-battle" loop src="Musou_mode/Background_perang.mp3"></audio>
+    <audio id="sfx-enemy-attack"></audio>
+    <audio id="sfx-enemy-hit" src="Musou_mode/Musuh1/Attacked.mp3"></audio>
+    <audio id="sfx-enemy-lose" src="Musou_mode/Musuh1/Lose.mp3"></audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>
