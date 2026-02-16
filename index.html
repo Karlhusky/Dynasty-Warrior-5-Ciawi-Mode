@@ -8,14 +8,17 @@
   </head>
   <body>
     <main id="app">
+
+      <!-- OPENING SCREEN -->
       <section id="opening-screen" class="screen active">
         <video id="opening-video" playsinline preload="auto">
           <source src="Opening.mp4" type="video/mp4" />
         </video>
-        <button id="btn-start-opening" class="opening-start">▶ Mulai Opening (dengan suara)</button>
+        <button id="btn-start-opening" class="opening-start">&#9654; Mulai Opening (dengan suara)</button>
         <div class="overlay-hint">Setelah opening dimulai: klik / tombol apa pun untuk skip</div>
       </section>
 
+      <!-- MENU SCREEN -->
       <section id="menu-screen" class="screen">
         <div class="menu-frame">
           <button class="menu-line disabled" disabled>CHALLENGE MODE</button>
@@ -26,6 +29,7 @@
         </div>
       </section>
 
+      <!-- MUSOU MODE SCREEN -->
       <section id="musou-screen" class="screen panel-screen">
         <h2>Musou Mode</h2>
         <p>Pilih pertempuran:</p>
@@ -33,9 +37,10 @@
           <button id="btn-ciawi">1. Pertempuran Ciawi</button>
           <button id="btn-hutan">2. Ekspedisi Hutan Selatan</button>
         </div>
-        <button class="back" data-back="menu-screen">← Kembali</button>
+        <button class="back" data-back="menu-screen">&larr; Kembali</button>
       </section>
 
+      <!-- ENCYCLOPEDIA MAIN SCREEN -->
       <section id="encyclopedia-screen" class="screen panel-screen encyclopedia-main">
         <h2>Encyclopedia</h2>
         <p>Pilih kategori:</p>
@@ -43,48 +48,53 @@
           <button id="btn-ency-battle">Pertempuran</button>
           <button id="btn-ency-character">Tokoh</button>
         </div>
-        <button class="back" data-back="menu-screen">← Kembali</button>
+        <button class="back" data-back="menu-screen">&larr; Kembali</button>
       </section>
 
+      <!-- ENCYCLOPEDIA PERTEMPURAN SCREEN -->
       <section id="ency-battle-screen" class="screen panel-screen">
-        <h2>Encyclopedia — Pertempuran</h2>
+        <h2>Encyclopedia &mdash; Pertempuran</h2>
         <div class="battle-list">
           <button class="ency-item" data-type="battle" data-key="ciawi">Pertempuran Ciawi</button>
           <button class="ency-item" data-type="battle" data-key="hutan">Ekspedisi Hutan Selatan</button>
         </div>
-        <button class="back" data-back="encyclopedia-screen">← Kembali</button>
+        <button class="back" data-back="encyclopedia-screen">&larr; Kembali</button>
       </section>
 
+      <!-- ENCYCLOPEDIA TOKOH SCREEN -->
       <section id="ency-character-screen" class="screen panel-screen">
-        <h2>Encyclopedia — Tokoh</h2>
+        <h2>Encyclopedia &mdash; Tokoh</h2>
         <div class="battle-list">
           <button class="ency-item" data-type="tokoh" data-key="anya">Anya</button>
           <button class="ency-item" data-type="tokoh" data-key="lin">Lin</button>
           <button class="ency-item" data-type="tokoh" data-key="yuan">Yuan</button>
           <button class="ency-item" data-type="tokoh" data-key="zhao">Zhao</button>
         </div>
-        <button class="back" data-back="encyclopedia-screen">← Kembali</button>
+        <button class="back" data-back="encyclopedia-screen">&larr; Kembali</button>
       </section>
 
+      <!-- ENCYCLOPEDIA DETAIL SCREEN -->
       <section id="ency-detail-screen" class="screen">
         <img id="ency-bg" src="Musou_mode/Background.png" alt="Latar encyclopedia" />
         <div class="ency-detail-card">
           <h3 id="ency-title">Judul</h3>
           <img id="ency-image" src="Musou_mode/Background.png" alt="Encyclopedia visual" />
           <p id="ency-text">Narasi encyclopedia.</p>
-          <button class="back" id="ency-detail-back" data-back="encyclopedia-screen">← Kembali</button>
+          <button class="back" id="ency-detail-back" data-back="encyclopedia-screen">&larr; Kembali</button>
         </div>
       </section>
 
+      <!-- BATTLE SCREEN -->
       <section id="battle-screen" class="screen">
         <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran" />
+
         <div class="battle-topbar">
           <div class="hp-block left">
-            <div class="name" id="hero-name">Zhào Bóyán Shànbà</div>
+            <div class="name" id="hero-name">Zh&agrave;o B&oacute;y&aacute;n Sh&agrave;nb&agrave;</div>
             <div class="hp-bar"><div id="hero-hp" class="hp-fill"></div></div>
           </div>
           <div class="hp-block right">
-            <div class="name" id="enemy-name">Yuán Qīguó</div>
+            <div class="name" id="enemy-name">Yu&aacute;n Q&#299;gu&oacute;</div>
             <div class="hp-bar"><div id="enemy-hp" class="hp-fill enemy"></div></div>
           </div>
         </div>
@@ -105,14 +115,17 @@
         </div>
       </section>
 
+      <!-- REWARD SCREEN -->
       <section id="reward-screen" class="screen reward-screen">
         <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah" />
       </section>
 
+      <!-- ENDING VIDEO SCREEN -->
       <section id="ending-video-screen" class="screen">
         <video id="ending-video" playsinline preload="auto"></video>
       </section>
 
+      <!-- DIALOGUE SCREEN -->
       <section id="dialogue-screen" class="screen">
         <img id="dialogue-bg" src="Musou_mode/Tamat/Background_cinta.png" alt="Latar percakapan" />
         <img id="dialogue-zhao" class="dialogue-char left" src="Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png" alt="Zhao" />
@@ -124,9 +137,12 @@
         </div>
       </section>
 
+      <!-- SCENE FADER -->
       <div id="scene-fader" aria-hidden="true"></div>
+
     </main>
 
+    <!-- AUDIO -->
     <audio id="bgm-battle" loop src="Musou_mode/Background_perang.mp3"></audio>
     <audio id="bgm-ency" loop src="Encyclopedia/Encyclopedia.mp3"></audio>
     <audio id="bgm-dialogue" loop src="Musou_mode/Tamat/Background_cinta.mp3"></audio>
