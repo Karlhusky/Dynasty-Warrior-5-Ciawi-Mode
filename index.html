@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dynasty Warrior 5 - Ciawi Mode (Sample)</title>
+    <title>Dynasty Warrior 5 - Ciawi Mode</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -31,36 +31,71 @@
         <p>Pilih pertempuran:</p>
         <div class="battle-list">
           <button id="btn-ciawi">1. Pertempuran Ciawi</button>
-          <button id="btn-hutan" disabled>2. Ekspedisi Hutan Selatan (Terkunci)</button>
+          <button id="btn-hutan">2. Ekspedisi Hutan Selatan</button>
         </div>
         <button class="back" data-back="menu-screen">← Kembali</button>
       </section>
 
-      <section id="encyclopedia-screen" class="screen panel-screen">
+      <section id="encyclopedia-screen" class="screen panel-screen encyclopedia-main">
         <h2>Encyclopedia</h2>
-        <p>Catatan tokoh dan pertempuran akan muncul di sini.</p>
-        <p class="muted">(Contoh awal: menu ini sudah aktif dan bisa dipilih dari halaman utama.)</p>
+        <p>Pilih kategori:</p>
+        <div class="battle-list">
+          <button id="btn-ency-battle">Pertempuran</button>
+          <button id="btn-ency-character">Tokoh</button>
+        </div>
         <button class="back" data-back="menu-screen">← Kembali</button>
       </section>
 
+      <section id="ency-battle-screen" class="screen panel-screen">
+        <h2>Encyclopedia — Pertempuran</h2>
+        <div class="battle-list">
+          <button class="ency-item" data-type="battle" data-key="ciawi">Pertempuran Ciawi</button>
+          <button class="ency-item" data-type="battle" data-key="hutan">Ekspedisi Hutan Selatan</button>
+        </div>
+        <button class="back" data-back="encyclopedia-screen">← Kembali</button>
+      </section>
+
+      <section id="ency-character-screen" class="screen panel-screen">
+        <h2>Encyclopedia — Tokoh</h2>
+        <div class="battle-list">
+          <button class="ency-item" data-type="tokoh" data-key="anya">Anya</button>
+          <button class="ency-item" data-type="tokoh" data-key="lin">Lin</button>
+          <button class="ency-item" data-type="tokoh" data-key="yuan">Yuan</button>
+          <button class="ency-item" data-type="tokoh" data-key="zhao">Zhao</button>
+        </div>
+        <button class="back" data-back="encyclopedia-screen">← Kembali</button>
+      </section>
+
+      <section id="ency-detail-screen" class="screen">
+        <img id="ency-bg" src="Musou_mode/Background.png" alt="Latar encyclopedia" />
+        <div class="ency-detail-card">
+          <h3 id="ency-title">Judul</h3>
+          <img id="ency-image" src="Musou_mode/Background.png" alt="Encyclopedia visual" />
+          <p id="ency-text">Narasi encyclopedia.</p>
+          <button class="back" id="ency-detail-back" data-back="encyclopedia-screen">← Kembali</button>
+        </div>
+      </section>
+
       <section id="battle-screen" class="screen">
-        <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran Ciawi" />
+        <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran" />
         <div class="battle-topbar">
           <div class="hp-block left">
-            <div class="name">Zhào Bóyán Shànbà</div>
+            <div class="name" id="hero-name">Zhào Bóyán Shànbà</div>
             <div class="hp-bar"><div id="hero-hp" class="hp-fill"></div></div>
           </div>
           <div class="hp-block right">
-            <div class="name">Yuán Qīguó</div>
+            <div class="name" id="enemy-name">Yuán Qīguó</div>
             <div class="hp-bar"><div id="enemy-hp" class="hp-fill enemy"></div></div>
           </div>
         </div>
 
         <img id="hero-idle" class="idle left" src="Musou_mode/Karakter1/Karakter1/Karakter1.png" alt="Hero" />
+        <img id="captured-idle" class="idle captured" src="Musou_mode/Karakter2/Karakter2.png" alt="Karakter 2 diculik" />
         <img id="enemy-idle" class="idle right" src="Musou_mode/Musuh1/Musuh1.png" alt="Enemy" />
 
         <img id="hero-reaction" class="reaction hero" src="Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png" alt="Hero reaction" />
         <img id="enemy-reaction" class="reaction enemy" src="Musou_mode/Musuh1/Menyerang.png" alt="Enemy reaction" />
+        <img id="captured-reaction" class="reaction captured-reaction" src="Musou_mode/Karakter2/Sedih.png" alt="Karakter2 sedih" />
         <img id="attack-effect" class="effect" src="effects/api.png" alt="Attack effect" />
 
         <div id="battle-ui" class="battle-ui">
@@ -70,12 +105,22 @@
         </div>
       </section>
 
-      <section id="reward-screen" class="screen">
-        <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah Musuh 1" />
-        <div class="reward-bubble">
-          <h3>Tài Shǐ Lǎorén — Kakek Penjaga Arsip</h3>
-          <p id="reward-text"></p>
-          <button class="back" data-back="menu-screen">Kembali ke Menu</button>
+      <section id="reward-screen" class="screen reward-screen">
+        <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah" />
+      </section>
+
+      <section id="ending-video-screen" class="screen">
+        <video id="ending-video" playsinline preload="auto"></video>
+      </section>
+
+      <section id="dialogue-screen" class="screen">
+        <img id="dialogue-bg" src="Musou_mode/Tamat/Background_cinta.png" alt="Latar percakapan" />
+        <img id="dialogue-zhao" class="dialogue-char left" src="Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png" alt="Zhao" />
+        <img id="dialogue-anya" class="dialogue-char right" src="Musou_mode/Karakter2/Bahagia.png" alt="Anya" />
+        <div id="dialogue-box" class="dialogue-box">
+          <img id="dialogue-bubble" src="Musou_mode/Tamat/Zhao_bubble.png" alt="bubble" />
+          <p id="dialogue-text">...</p>
+          <button id="dialogue-next">Lanjut</button>
         </div>
       </section>
 
@@ -83,6 +128,9 @@
     </main>
 
     <audio id="bgm-battle" loop src="Musou_mode/Background_perang.mp3"></audio>
+    <audio id="bgm-ency" loop src="Encyclopedia/Encyclopedia.mp3"></audio>
+    <audio id="bgm-dialogue" loop src="Musou_mode/Tamat/Background_cinta.mp3"></audio>
+    <audio id="bgm-reward"></audio>
     <audio id="sfx-enemy-attack"></audio>
     <audio id="sfx-enemy-hit" src="Musou_mode/Musuh1/Attacked.mp3"></audio>
     <audio id="sfx-enemy-lose" src="Musou_mode/Musuh1/Lose.mp3"></audio>
