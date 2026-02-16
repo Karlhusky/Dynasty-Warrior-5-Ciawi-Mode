@@ -86,7 +86,6 @@ body {
   justify-content: center;
   gap: 12px;
 }
-@@ -91,285 +89,371 @@ body {
 #menu-screen {
   background:
     linear-gradient(rgba(13, 8, 1, 0.48), rgba(13, 8, 1, 0.48)),
