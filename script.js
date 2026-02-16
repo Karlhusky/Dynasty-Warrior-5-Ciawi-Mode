@@ -11,6 +11,8 @@ const battleBgm = document.getElementById('bgm-battle');
 const sfxEnemyAttack = document.getElementById('sfx-enemy-attack');
 const sfxEnemyHit = document.getElementById('sfx-enemy-hit');
 const sfxEnemyLose = document.getElementById('sfx-enemy-lose');
+const rewardBgm = document.getElementById('bgm-reward');
+const encyclopediaBgm = document.getElementById('bgm-encyclopedia');
 
 const heroIdle = document.getElementById('hero-idle');
 const enemyIdle = document.getElementById('enemy-idle');
@@ -23,7 +25,67 @@ const questionText = document.getElementById('question-text');
 const choicesWrap = document.getElementById('choices');
 const battleLog = document.getElementById('battle-log');
 const sceneFader = document.getElementById('scene-fader');
-const rewardText = document.getElementById('reward-text');
+
+const encyclopediaMenu = document.getElementById('encyclopedia-menu');
+const encyclopediaSubmenu = document.getElementById('encyclopedia-submenu');
+const encyclopediaSubmenuTitle = document.getElementById('ency-submenu-title');
+const encyclopediaSubmenuList = document.getElementById('ency-submenu-list');
+const encyclopediaDetail = document.getElementById('encyclopedia-detail');
+const encyclopediaDetailTitle = document.getElementById('ency-detail-title');
+const encyclopediaDetailImage = document.getElementById('ency-detail-image');
+const encyclopediaDetailText = document.getElementById('ency-detail-text');
+const encyclopediaDetailBg = document.getElementById('ency-detail-bg');
+const btnEncyBackMain = document.getElementById('btn-ency-back-main');
+const btnEncyBackSub = document.getElementById('btn-ency-back-sub');
+
+const encyclopediaData = {
+  pertempuran: {
+    title: 'Pertempuran',
+    items: [
+      {
+        title: 'Pertempuran Ciawi',
+        image: 'Encyclopedia/Pertempuran/Pertempuran_Ciawi/Pertempuran_Ciawi.png',
+        textPath: 'Encyclopedia/Pertempuran/Pertempuran_Ciawi/Pertempuran_Ciawi.txt',
+        background: 'Musou_mode/Background.png',
+      },
+      {
+        title: 'Ekspedisi Hutan Selatan',
+        image: 'Encyclopedia/Pertempuran/Ekspedisi_Hutan_Selatan/Ekspedisi_Hutan_Selatan.png',
+        textPath: 'Encyclopedia/Pertempuran/Ekspedisi_Hutan_Selatan/Ekspedisi_Hutan_Selatan.txt',
+        background: 'Musou_mode/Background2.png',
+      },
+    ],
+  },
+  tokoh: {
+    title: 'Tokoh',
+    items: [
+      {
+        title: 'Anya',
+        image: 'Encyclopedia/Tokoh/Anya/Karakter2.png',
+        textPath: 'Encyclopedia/Tokoh/Anya/Anya.txt',
+        background: 'Musou_mode/Tamat/Background_cinta.png',
+      },
+      {
+        title: 'Lin',
+        image: 'Encyclopedia/Tokoh/Lin/Musuh2.png',
+        textPath: 'Encyclopedia/Tokoh/Lin/Lin.txt',
+        background: 'Musou_mode/Background2.png',
+      },
+      {
+         title: 'Yuan',
+        image: 'Encyclopedia/Tokoh/Yuan/Musuh1.png',
+        textPath: 'Encyclopedia/Tokoh/Yuan/Yuan.txt',
+        background: 'Musou_mode/Background.png',
+      },
+      {
+        title: 'Zhao',
+        image: 'Encyclopedia/Tokoh/Zhao/Karakter1.png',
+        textPath: 'Encyclopedia/Tokoh/Zhao/Zhao.txt',
+        background: 'Musou_mode/Tamat/Background_cinta.png',
+      },
+    ],
+  },
+};
 
 const heroHpMax = 4;
 const enemyHpMax = 4;
@@ -33,9 +95,6 @@ let currentRound = 0;
 let attackCountHero = 0;
 let attackCountEnemy = 0;
 let openingStarted = false;
-
-const rewardNarration =
-  'Zhào Bóyán Shànbà, terimalah Buku Gambar Kuno Ciawi ini. Pada tahun 214 M, buku gambar sangat langka—hanya penulis istana, ahli strategi, dan pemikir besar yang memilikinya. Catatlah peta, taktik, dan kisah kemenanganmu, agar ilmu ini bisa diwariskan ke generasi berikutnya.';
 
 const questions = [
   {
@@ -63,12 +122,33 @@ const questions = [
 function showScreen(id) {
   screens.forEach((s) => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  
+  const inBattle = id === 'battle-screen';
+  const inReward = id === 'reward-screen';
+  const inEncyclopedia = id === 'encyclopedia-screen';
 
-  if (id !== 'battle-screen') {
+  if (!inBattle) {
     battleBgm.pause();
     battleBgm.currentTime = 0;
   }
-}
+
+  if (inReward) {
+    rewardBgm.currentTime = 0;
+    rewardBgm.volume = 1;
+    rewardBgm.play().catch(() => {});
+  } else {
+    rewardBgm.pause();
+    rewardBgm.currentTime = 0;
+  }
+
+  if (inEncyclopedia) {
+    encyclopediaBgm.volume = 0.35;
+    encyclopediaBgm.play().catch(() => {});
+  } else {
+    encyclopediaBgm.pause();
+    encyclopediaBgm.currentTime = 0;
+  }
+  }
 
 function transitionTo(targetScreen, callback) {
   sceneFader.classList.add('active');
@@ -200,18 +280,6 @@ function answerQuestion(selected, answer) {
   setTimeout(askQuestion, 2000);
 }
 
-function typeRewardText(text) {
-  rewardText.textContent = '';
-  const words = text.split(' ');
-  let i = 0;
-
-  const timer = setInterval(() => {
-    rewardText.textContent += `${words[i]} `;
-    i += 1;
-    if (i >= words.length) clearInterval(timer);
-  }, 85);
-}
-
 function endBattle() {
   const heroWon = enemyHp <= heroHp;
 
@@ -224,7 +292,7 @@ function endBattle() {
     sfxEnemyLose.play().catch(() => {});
 
     setTimeout(() => {
-      transitionTo('reward-screen', () => typeRewardText(rewardNarration));
+      transitionTo('reward-screen');
     }, 2100);
   } else {
     battleLog.textContent = 'Kalah! Yuán Qīguó masih unggul. Coba lagi dari menu Musou.';
@@ -252,13 +320,71 @@ function startBattle() {
   setTimeout(askQuestion, 1100);
 }
 
+function resetEncyclopediaView() {
+  encyclopediaMenu.classList.remove('hidden');
+  encyclopediaSubmenu.classList.add('hidden');
+  encyclopediaDetail.classList.add('hidden');
+}
+
+function showEncyclopediaSubmenu(categoryKey) {
+  const category = encyclopediaData[categoryKey];
+  if (!category) return;
+
+  encyclopediaMenu.classList.add('hidden');
+  encyclopediaDetail.classList.add('hidden');
+  encyclopediaSubmenu.classList.remove('hidden');
+  encyclopediaSubmenuTitle.textContent = category.title;
+  encyclopediaSubmenuList.innerHTML = '';
+
+  category.items.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.textContent = item.title;
+    btn.addEventListener('click', () => showEncyclopediaDetail(item));
+    encyclopediaSubmenuList.appendChild(btn);
+  });
+}
+
+async function showEncyclopediaDetail(item) {
+  encyclopediaSubmenu.classList.add('hidden');
+  encyclopediaDetail.classList.remove('hidden');
+
+  encyclopediaDetailTitle.textContent = item.title;
+  encyclopediaDetailImage.src = item.image;
+  encyclopediaDetailBg.src = item.background;
+  encyclopediaDetailText.textContent = 'Memuat narasi...';
+
+  try {
+    const response = await fetch(item.textPath);
+    if (!response.ok) throw new Error('Gagal memuat narasi');
+    const text = await response.text();
+    encyclopediaDetailText.textContent = text.trim();
+  } catch {
+    encyclopediaDetailText.textContent = 'Narasi belum dapat dimuat saat ini.';
+  }
+}
+
 btnStartOpening.addEventListener('click', (event) => {
   event.stopPropagation();
   startOpeningWithSound();
 });
 btnMusou.addEventListener('click', () => showScreen('musou-screen'));
-btnEncyclopedia.addEventListener('click', () => showScreen('encyclopedia-screen'));
+btnEncyclopedia.addEventListener('click', () => {
+  showScreen('encyclopedia-screen');
+  resetEncyclopediaView();
+});
 btnCiawi.addEventListener('click', startBattle);
+
+document.querySelectorAll('[data-ency-category]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    showEncyclopediaSubmenu(btn.getAttribute('data-ency-category'));
+  });
+});
+
+btnEncyBackMain.addEventListener('click', resetEncyclopediaView);
+btnEncyBackSub.addEventListener('click', () => {
+  encyclopediaDetail.classList.add('hidden');
+  encyclopediaSubmenu.classList.remove('hidden');
+});
 
 backButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
