@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #080b14;
   color: #fff;
 }
@@ -26,6 +26,20 @@ body {
   display: flex;
 }
 
+#scene-fader {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+#scene-fader.active {
+  opacity: 1;
+}
+
 #opening-screen {
   align-items: center;
   justify-content: center;
@@ -38,13 +52,32 @@ body {
   object-fit: cover;
 }
 
+.opening-start {
+  position: absolute;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 1.05rem;
+  padding: 12px 20px;
+  background: rgba(24, 64, 150, 0.9);
+  border: 1px solid #b8cdfd;
+}
+
+.opening-start.hidden {
+  display: none;
+}
+
 .overlay-hint {
   position: absolute;
-  bottom: 20px;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.6);
   padding: 8px 14px;
   border-radius: 8px;
-  animation: blink 1.15s infinite;
+  animation: blink 1.25s infinite;
+  z-index: 5;
 }
 
 #menu-screen,
@@ -53,15 +86,49 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(155deg, #1c2f58, #111933);
 }
 
-.menu-buttons,
-.battle-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: min(550px, 90vw);
+#menu-screen {
+  background:
+    linear-gradient(rgba(13, 8, 1, 0.48), rgba(13, 8, 1, 0.48)),
+    url('Musou_mode/Background2.png') center / cover no-repeat;
+}
+
+.menu-frame {
+  width: min(560px, 90vw);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.menu-line {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(38, 23, 8, 0.54);
+  color: rgba(245, 232, 206, 0.9);
+  padding: 14px 22px;
+  text-align: left;
+  font-size: clamp(1.2rem, 1.8vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
+.menu-line:last-child {
+  border-bottom: 0;
+}
+
+.menu-line.disabled {
+  cursor: not-allowed;
+  color: rgba(211, 202, 184, 0.55);
+}
+
+.menu-line.menu-active {
+  color: #fff6d6;
+  background: rgba(88, 57, 25, 0.63);
 }
 
 button {
@@ -75,12 +142,12 @@ button {
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 .blink {
-  animation: blink 0.95s infinite;
+  animation: blink 1.05s infinite;
 }
 
 @keyframes blink {
@@ -89,8 +156,15 @@ button:disabled {
     opacity: 1;
   }
   50% {
-    opacity: 0.35;
+    opacity: 0.42;
   }
+}
+
+.battle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(550px, 90vw);
 }
 
 #battle-screen {
@@ -151,25 +225,59 @@ button:disabled {
 
 .idle {
   position: absolute;
-  bottom: 140px;
-  width: min(24vw, 340px);
+  bottom: 20px;
+  width: min(22vw, 300px);
   z-index: 2;
+  transition: transform 0.9s ease;
 }
 
 .idle.left {
-  left: 6%;
+  left: 7%;
 }
 
 .idle.right {
-  right: 6%;
+  right: 7%;
+}
+
+.idle.attack-lunge.left {
+  transform: translateX(40px);
+}
+
+.idle.attack-lunge.right {
+  transform: translateX(-40px);
+}
+
+.idle.hit-shake {
+  animation: hitShake 0.8s linear;
+}
+
+@keyframes hitShake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(10px);
+  }
+  60% {
+    transform: translateX(-8px);
+  }
+  80% {
+    transform: translateX(8px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .reaction {
   position: absolute;
-  top: 68px;
+  top: 74px;
   width: min(14vw, 160px);
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.45s;
   z-index: 5;
   border: 2px solid rgba(255, 255, 255, 0.7);
   border-radius: 8px;
@@ -191,15 +299,15 @@ button:disabled {
 .effect {
   position: absolute;
   width: min(20vw, 220px);
-  top: 42%;
-  right: 21%;
+  top: 45%;
+  right: 22%;
   z-index: 3;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.6s;
 }
 
 .effect.left-hit {
-  left: 21%;
+  left: 22%;
   right: auto;
 }
 
@@ -226,22 +334,40 @@ button:disabled {
   gap: 10px;
 }
 
-.reward-dialog {
-  position: absolute;
-  left: 50%;
-  bottom: 28px;
-  transform: translateX(-50%);
-  width: min(920px, 94vw);
-  background: rgba(5, 9, 18, 0.8);
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  border-radius: 12px;
-  padding: 14px;
+#reward-screen {
+  align-items: center;
+  justify-content: center;
+  background: #000;
 }
 
 #reward-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #000;
+}
+
+.reward-bubble {
+  position: absolute;
+  right: 2.6%;
+  bottom: 8.5%;
+  width: min(43vw, 700px);
+  min-height: 210px;
+  background: rgba(12, 12, 18, 0.66);
+  border: 1px solid rgba(255, 236, 210, 0.7);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.reward-bubble h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.reward-bubble p {
+  margin-top: 0;
+  line-height: 1.45;
+  min-height: 92px;
 }
 
 .muted {
