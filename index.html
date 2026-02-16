@@ -9,18 +9,20 @@
   <body>
     <main id="app">
       <section id="opening-screen" class="screen active">
-        <video id="opening-video" playsinline>
+        <video id="opening-video" playsinline preload="auto">
           <source src="Opening.mp4" type="video/mp4" />
         </video>
-        <div class="overlay-hint">Klik di mana saja / tekan tombol apa saja untuk skip opening</div>
+        <button id="btn-start-opening" class="opening-start">▶ Mulai Opening (dengan suara)</button>
+        <div class="overlay-hint">Setelah opening dimulai: klik / tombol apa pun untuk skip</div>
       </section>
 
       <section id="menu-screen" class="screen">
-        <h1>Dynasty Warrior 5: Ciawi Mode</h1>
-        <p class="subtitle">Pilih mode permainan:</p>
-        <div class="menu-buttons">
-          <button id="btn-musou" class="blink">⚔ Musou Mode</button>
-          <button id="btn-encyclopedia" class="blink">📜 Encyclopedia</button>
+        <div class="menu-frame">
+          <button class="menu-line disabled" disabled>CHALLENGE MODE</button>
+          <button class="menu-line disabled" disabled>FREE MODE</button>
+          <button id="btn-musou" class="menu-line menu-active blink">MUSOU MODE</button>
+          <button class="menu-line disabled" disabled>OPTIONS</button>
+          <button id="btn-encyclopedia" class="menu-line blink">ENCYCLOPEDIA</button>
         </div>
       </section>
 
@@ -70,17 +72,14 @@
 
       <section id="reward-screen" class="screen">
         <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah Musuh 1" />
-        <div class="reward-dialog">
-          <h3>Kakek Penjaga Arsip</h3>
-          <p>
-            "Zhào Bóyán Shànbà, terimalah <strong>Buku Gambar Kuno Ciawi</strong> ini. Pada tahun 214 M,
-            benda seperti ini sangat langka—hanya penulis istana dan pemikir besar yang memilikinya.
-            Dengan buku ini, strategi, peta, dan kenangan kemenanganmu bisa diwariskan untuk generasi
-            berikutnya."
-          </p>
+        <div class="reward-bubble">
+          <h3>Tài Shǐ Lǎorén — Kakek Penjaga Arsip</h3>
+          <p id="reward-text"></p>
           <button class="back" data-back="menu-screen">Kembali ke Menu</button>
         </div>
       </section>
+
+      <div id="scene-fader" aria-hidden="true"></div>
     </main>
 
     <audio id="bgm-battle" loop src="Musou_mode/Background_perang.mp3"></audio>
