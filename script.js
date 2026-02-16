@@ -1,6 +1,7 @@
 const screens = document.querySelectorAll('.screen');
 const openingScreen = document.getElementById('opening-screen');
 const openingVideo = document.getElementById('opening-video');
+const btnStartOpening = document.getElementById('btn-start-opening');
 const btnMusou = document.getElementById('btn-musou');
 const btnEncyclopedia = document.getElementById('btn-encyclopedia');
 const btnCiawi = document.getElementById('btn-ciawi');
@@ -11,6 +12,8 @@ const sfxEnemyAttack = document.getElementById('sfx-enemy-attack');
 const sfxEnemyHit = document.getElementById('sfx-enemy-hit');
 const sfxEnemyLose = document.getElementById('sfx-enemy-lose');
 
+const heroIdle = document.getElementById('hero-idle');
+const enemyIdle = document.getElementById('enemy-idle');
 const heroHpFill = document.getElementById('hero-hp');
 const enemyHpFill = document.getElementById('enemy-hp');
 const heroReaction = document.getElementById('hero-reaction');
@@ -19,6 +22,8 @@ const attackEffect = document.getElementById('attack-effect');
 const questionText = document.getElementById('question-text');
 const choicesWrap = document.getElementById('choices');
 const battleLog = document.getElementById('battle-log');
+const sceneFader = document.getElementById('scene-fader');
+const rewardText = document.getElementById('reward-text');
 
 const heroHpMax = 4;
 const enemyHpMax = 4;
@@ -27,6 +32,10 @@ let enemyHp = enemyHpMax;
 let currentRound = 0;
 let attackCountHero = 0;
 let attackCountEnemy = 0;
+let openingStarted = false;
+
+const rewardNarration =
+  'Zhào Bóyán Shànbà, terimalah Buku Gambar Kuno Ciawi ini. Pada tahun 214 M, buku gambar sangat langka—hanya penulis istana, ahli strategi, dan pemikir besar yang memilikinya. Catatlah peta, taktik, dan kisah kemenanganmu, agar ilmu ini bisa diwariskan ke generasi berikutnya.';
 
 const questions = [
   {
@@ -61,18 +70,34 @@ function showScreen(id) {
   }
 }
 
-function tryPlayOpening() {
+function transitionTo(targetScreen, callback) {
+  sceneFader.classList.add('active');
+  setTimeout(() => {
+    if (typeof callback === 'function') callback();
+    showScreen(targetScreen);
+    setTimeout(() => sceneFader.classList.remove('active'), 250);
+  }, 550);
+}
+
+function startOpeningWithSound() {
+  if (openingStarted) return;
+  openingStarted = true;
+
   openingVideo.muted = false;
+  openingVideo.volume = 1;
+  openingVideo.currentTime = 0;
   openingVideo.play().catch(() => {
     openingVideo.muted = true;
     openingVideo.play().catch(() => {});
   });
+
+  btnStartOpening.classList.add('hidden');
 }
 
 function skipOpening() {
-  if (!openingScreen.classList.contains('active')) return;
+  if (!openingScreen.classList.contains('active') || !openingStarted) return;
   openingVideo.pause();
-  showScreen('menu-screen');
+  transitionTo('menu-screen');
 }
 
 function updateHpBars() {
@@ -83,14 +108,30 @@ function updateHpBars() {
 function showReaction(target, src) {
   target.src = src;
   target.classList.add('visible');
-  setTimeout(() => target.classList.remove('visible'), 1300);
+  setTimeout(() => target.classList.remove('visible'), 2200);
 }
 
 function showEffect(src, isHeroAttack) {
   attackEffect.src = src;
   attackEffect.classList.add('visible');
   attackEffect.classList.toggle('left-hit', !isHeroAttack);
-  setTimeout(() => attackEffect.classList.remove('visible'), 500);
+  setTimeout(() => attackEffect.classList.remove('visible'), 1300);
+}
+
+function playAttackMotion(isHeroAttack) {
+  const attacker = isHeroAttack ? heroIdle : enemyIdle;
+  const defender = isHeroAttack ? enemyIdle : heroIdle;
+
+  attacker.classList.remove('attack-lunge');
+  defender.classList.remove('hit-shake');
+
+  attacker.classList.add('attack-lunge');
+  defender.classList.add('hit-shake');
+
+  setTimeout(() => {
+    attacker.classList.remove('attack-lunge');
+    defender.classList.remove('hit-shake');
+  }, 1000);
 }
 
 function askQuestion() {
@@ -130,6 +171,7 @@ function answerQuestion(selected, answer) {
     );
     showReaction(enemyReaction, 'Musou_mode/Musuh1/Terkena_serangan.png');
     showEffect(attackCountHero % 2 === 0 ? 'effects/petir.PNG' : 'effects/api.png', true);
+    playAttackMotion(true);
 
     sfxEnemyHit.currentTime = 0;
     sfxEnemyHit.volume = 1;
@@ -146,6 +188,7 @@ function answerQuestion(selected, answer) {
     );
     showReaction(heroReaction, 'Musou_mode/Karakter1/Karakter1/Battle/Terkena_serangan.png');
     showEffect(attackCountEnemy % 2 === 0 ? 'effects/Uang_petir.png' : 'effects/Uang_api.png', false);
+    playAttackMotion(false);
 
     sfxEnemyAttack.src = enemyAttackAlt ? 'Musou_mode/Musuh1/Attack2.mp3' : 'Musou_mode/Musuh1/Attack1.mp3';
     sfxEnemyAttack.currentTime = 0;
@@ -154,7 +197,19 @@ function answerQuestion(selected, answer) {
   }
 
   updateHpBars();
-  setTimeout(askQuestion, 1100);
+  setTimeout(askQuestion, 2000);
+}
+
+function typeRewardText(text) {
+  rewardText.textContent = '';
+  const words = text.split(' ');
+  let i = 0;
+
+  const timer = setInterval(() => {
+    rewardText.textContent += `${words[i]} `;
+    i += 1;
+    if (i >= words.length) clearInterval(timer);
+  }, 85);
 }
 
 function endBattle() {
@@ -169,13 +224,13 @@ function endBattle() {
     sfxEnemyLose.play().catch(() => {});
 
     setTimeout(() => {
-      showScreen('reward-screen');
-    }, 1800);
+      transitionTo('reward-screen', () => typeRewardText(rewardNarration));
+    }, 2100);
   } else {
     battleLog.textContent = 'Kalah! Yuán Qīguó masih unggul. Coba lagi dari menu Musou.';
     showReaction(heroReaction, 'Musou_mode/Karakter1/Karakter1/Battle/Kalah.png');
     showReaction(enemyReaction, 'Musou_mode/Musuh1/Menang.png');
-    setTimeout(() => showScreen('musou-screen'), 1800);
+    setTimeout(() => transitionTo('musou-screen'), 2100);
   }
 }
 
@@ -188,15 +243,19 @@ function startBattle() {
   updateHpBars();
 
   battleLog.textContent = 'Pertempuran dimulai! Jawab 4 soal untuk menentukan pemenang.';
-  showScreen('battle-screen');
+  transitionTo('battle-screen');
 
-  battleBgm.volume = 0.22;
+  battleBgm.volume = 0.2;
   battleBgm.currentTime = 0;
   battleBgm.play().catch(() => {});
 
-  setTimeout(askQuestion, 700);
+  setTimeout(askQuestion, 1100);
 }
 
+btnStartOpening.addEventListener('click', (event) => {
+  event.stopPropagation();
+  startOpeningWithSound();
+});
 btnMusou.addEventListener('click', () => showScreen('musou-screen'));
 btnEncyclopedia.addEventListener('click', () => showScreen('encyclopedia-screen'));
 btnCiawi.addEventListener('click', startBattle);
@@ -204,12 +263,10 @@ btnCiawi.addEventListener('click', startBattle);
 backButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
     const target = btn.getAttribute('data-back');
-    showScreen(target);
+    transitionTo(target);
   });
 });
 
 openingScreen.addEventListener('click', skipOpening);
 document.addEventListener('keydown', skipOpening);
-openingVideo.addEventListener('ended', skipOpening);
-
-tryPlayOpening();
+openingVideo.addEventListener('ended', () => transitionTo('menu-screen'));
