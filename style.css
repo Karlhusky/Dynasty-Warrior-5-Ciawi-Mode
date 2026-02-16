@@ -1,10 +1,4 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #080b14;
   color: #fff;
 }
@@ -85,7 +79,7 @@ body {
   justify-content: center;
   gap: 12px;
 }
-@@ -91,285 +89,332 @@ body {
+@@ -91,285 +89,371 @@ body {
 #menu-screen {
   background:
     linear-gradient(rgba(13, 8, 1, 0.48), rgba(13, 8, 1, 0.48)),
@@ -153,6 +147,45 @@ button {
   flex-direction: column;
   gap: 14px;
   width: min(640px, 90vw);
+}
+
+
+#encyclopedia-screen,
+#ency-battle-screen,
+#ency-character-screen,
+#ency-detail-screen {
+  background:
+    linear-gradient(rgba(6, 12, 28, 0.72), rgba(6, 12, 28, 0.72)),
+    url('Musou_mode/Background2.png') center / cover no-repeat;
+}
+
+#encyclopedia-screen h2,
+#ency-battle-screen h2,
+#ency-character-screen h2 {
+  font-size: clamp(2rem, 2.8vw, 3rem);
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.75);
+}
+
+#encyclopedia-screen .battle-list,
+#ency-battle-screen .battle-list,
+#ency-character-screen .battle-list {
+  width: min(520px, 92vw);
+}
+
+button,
+.ency-item,
+#dialogue-next {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(180deg, #3f68be, #244279);
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+}
+
+button:hover,
+.ency-item:hover,
+#dialogue-next:hover {
+  filter: brightness(1.08);
 }
 
 #battle-screen {
