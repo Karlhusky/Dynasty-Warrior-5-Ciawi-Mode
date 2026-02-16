@@ -220,7 +220,6 @@ index b01b09a5f30ea5f6a3d62e3d84f48ca09f3c3266..5704b582213a158aa35305907993ed0e
    background: linear-gradient(90deg, #ffa250, #d94d3a);
  }
  
--.idle {
 +.idle,
 +.support {
    position: absolute;
@@ -296,24 +295,12 @@ index b01b09a5f30ea5f6a3d62e3d84f48ca09f3c3266..5704b582213a158aa35305907993ed0e
    background: #000;
  }
  
--.reward-bubble {
 +.reward-controls {
    position: absolute;
--  right: 2.6%;
--  bottom: 8.5%;
--  width: min(43vw, 700px);
--  min-height: 210px;
--  background: rgba(12, 12, 18, 0.66);
--  border: 1px solid rgba(255, 236, 210, 0.7);
--  border-radius: 8px;
--  padding: 14px;
 +  right: 3%;
 +  bottom: 6%;
  }
  
--.reward-bubble h3 {
--  margin-top: 0;
--  margin-bottom: 8px;
 +.cinematic-screen {
 +  align-items: center;
 +  justify-content: center;
@@ -326,7 +313,6 @@ index b01b09a5f30ea5f6a3d62e3d84f48ca09f3c3266..5704b582213a158aa35305907993ed0e
 +  object-fit: cover;
  }
  
--.reward-bubble p {
 +#dialogue-screen {
 +  align-items: center;
 +  justify-content: center;
@@ -401,8 +387,6 @@ index b01b09a5f30ea5f6a3d62e3d84f48ca09f3c3266..5704b582213a158aa35305907993ed0e
 +
 +.dialogue-choice-box h3 {
    margin-top: 0;
--  line-height: 1.45;
--  min-height: 92px;
 +}
 +
 +.credits-frame {
