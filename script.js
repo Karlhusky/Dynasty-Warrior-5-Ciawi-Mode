@@ -35,6 +35,7 @@ const questionText = document.getElementById('question-text');
 const choicesWrap = document.getElementById('choices');
 const battleLog = document.getElementById('battle-log');
 const sceneFader = document.getElementById('scene-fader');
+const winOverlay = document.getElementById('win-overlay');
 
 const rewardImg = document.getElementById('reward-img');
 const endingVideo = document.getElementById('ending-video');
@@ -63,6 +64,7 @@ let currentBattle = 'ciawi';
 let pendingEndingSequence = false;
 let dialogueIndex = 0;
 let activeDialogue = [];
+let rewardAudioDone = false;
 
 const encyclopediaData = {
   battle: {
@@ -90,21 +92,21 @@ const encyclopediaData = {
       backTo: 'ency-character-screen',
     },
     lin: {
-      title: 'Lín Zōng’è',
+      title: 'L\u00edn Z\u014dng\u2019\u00e8',
       image: 'Encyclopedia/Tokoh/Lin/Musuh2.png',
       textPath: 'Encyclopedia/Tokoh/Lin/Lin.txt',
       bg: 'Musou_mode/Background2.png',
       backTo: 'ency-character-screen',
     },
     yuan: {
-      title: 'Yuán Qīguó',
+      title: 'Yu\u00e1n Q\u012bgu\u00f3',
       image: 'Encyclopedia/Tokoh/Yuan/Musuh1.png',
       textPath: 'Encyclopedia/Tokoh/Yuan/Yuan.txt',
       bg: 'Musou_mode/Background.png',
       backTo: 'ency-character-screen',
     },
     zhao: {
-      title: 'Zhào Bóyán Shànbà',
+      title: 'Zh\u00e0o B\u00f3y\u00e1n Sh\u00e0nb\u00e0',
       image: 'Encyclopedia/Tokoh/Zhao/Karakter1.png',
       textPath: 'Encyclopedia/Tokoh/Zhao/Zhao.txt',
       bg: 'Musou_mode/Tamat/Background_cinta.png',
@@ -115,7 +117,7 @@ const encyclopediaData = {
 
 const battleConfig = {
   ciawi: {
-    enemyName: 'Yuán Qīguó',
+    enemyName: 'Yu\u00e1n Q\u012bgu\u00f3',
     enemyIdle: 'Musou_mode/Musuh1/Musuh1.png',
     bg: 'Musou_mode/Background.png',
     enemyAttack1: 'Musou_mode/Musuh1/Menyerang.png',
@@ -144,13 +146,13 @@ const battleConfig = {
     rewardAutoNext: false,
   },
   hutan: {
-    enemyName: 'Lín Zōng’è',
+    enemyName: 'L\u00edn Z\u014dng\u2019\u00e8',
     enemyIdle: 'Musou_mode/Musuh2/Musuh2.png',
     bg: 'Musou_mode/Background2.png',
     enemyAttack1: 'Musou_mode/Musuh2/Menyerang.png',
     enemyAttack2: 'Musou_mode/Musuh2/Menyerang.png',
     enemyHit: 'Musou_mode/Musuh2/Kaget.png',
-    enemyWin: 'Musou_mode/Musuh2/Biasa].png',
+    enemyWin: 'Musou_mode/Musuh2/Biasa.png',
     enemyLose: 'Musou_mode/Musuh2/Kalah.png',
     enemyAttackSfx1: 'Musou_mode/Musuh2/Attack1.mp3',
     enemyAttackSfx2: 'Musou_mode/Musuh2/Attack2.mp3',
@@ -300,7 +302,7 @@ function askQuestion() {
 
   const conf = battleConfig[currentBattle];
   const item = conf.questionPool[currentRound % conf.questionPool.length];
-  questionText.textContent = `Ronde ${currentRound + 1}/4 — ${item.q}`;
+  questionText.textContent = `Ronde ${currentRound + 1}/4 \u2014 ${item.q}`;
   choicesWrap.innerHTML = '';
 
   item.choices.forEach((choice, idx) => {
@@ -360,20 +362,47 @@ function answerQuestion(selected, answer) {
   setTimeout(askQuestion, 2000);
 }
 
+// ─── WIN ANIMATION ────────────────────────────────────────────────────────────
+function showWinAnimation(callback) {
+  // Gerakkan Karakter1 ke tengah
+  heroIdle.classList.add('win-center');
+
+  // Tampilkan overlay "Kamu Menang!"
+  winOverlay.classList.remove('hidden');
+  winOverlay.classList.add('visible');
+
+  // Setelah 3 detik, sembunyikan overlay & reset posisi hero, lalu jalankan callback
+  setTimeout(() => {
+    winOverlay.classList.remove('visible');
+    winOverlay.classList.add('hidden');
+    heroIdle.classList.remove('win-center');
+    if (typeof callback === 'function') callback();
+  }, 3000);
+}
+
+// ─── REWARD ───────────────────────────────────────────────────────────────────
 function showRewardAndProceed() {
   const conf = battleConfig[currentBattle];
   rewardImg.src = conf.rewardImg;
+  rewardAudioDone = false;
 
-  rewardBgm.src = conf.rewardBgm;
-  rewardBgm.volume = 0.45;
-  rewardBgm.currentTime = 0;
-  rewardBgm.play().catch(() => {});
+  transitionTo('reward-screen', () => {
+    // Audio mulai SETELAH masuk reward screen
+    rewardBgm.src = conf.rewardBgm;
+    rewardBgm.volume = 0.45;
+    rewardBgm.currentTime = 0;
+    rewardBgm.play().catch(() => {});
 
-  transitionTo('reward-screen');
-
-  if (conf.rewardAutoNext) {
-    setTimeout(() => startEndingSequence(), 2600);
-  }
+    // Setelah audio selesai
+    rewardBgm.onended = () => {
+      rewardAudioDone = true;
+      if (conf.rewardAutoNext) {
+        // Hutan Selatan: otomatis lanjut ke ending
+        startEndingSequence();
+      }
+      // Ciawi: tunggu klik dari user
+    };
+  });
 }
 
 function endBattle() {
@@ -390,10 +419,13 @@ function endBattle() {
     sfxEnemyLose.volume = 1;
     sfxEnemyLose.play().catch(() => {});
 
+    // Tampilkan animasi menang dulu, baru ke reward
     setTimeout(() => {
       battleBgm.pause();
       battleBgm.currentTime = 0;
-      showRewardAndProceed();
+      showWinAnimation(() => {
+        showRewardAndProceed();
+      });
     }, 2000);
   } else {
     battleLog.textContent = `Kalah! ${conf.enemyName} masih unggul. Coba lagi dari menu Musou.`;
@@ -405,7 +437,7 @@ function endBattle() {
 
 function setupBattleAppearance() {
   const conf = battleConfig[currentBattle];
-  heroName.textContent = 'Zhào Bóyán Shànbà';
+  heroName.textContent = 'Zh\u00e0o B\u00f3y\u00e1n Sh\u00e0nb\u00e0';
   enemyName.textContent = conf.enemyName;
   enemyIdle.src = conf.enemyIdle;
   battleBg.src = conf.bg;
@@ -416,7 +448,6 @@ function setupBattleAppearance() {
 function startBattle(mode) {
   stopAllAudio();
   currentBattle = mode;
-  const conf = battleConfig[currentBattle];
   setupBattleAppearance();
 
   heroHp = heroHpMax;
@@ -487,7 +518,9 @@ function renderDialogueStep() {
 
   dialogueZhao.src = item.zhao;
   dialogueAnya.src = item.anya;
-  dialogueBubble.src = item.speaker === 'zhao' ? 'Musou_mode/Tamat/Zhao_bubble.png' : 'Musou_mode/Tamat/Anya_buble.png';
+  dialogueBubble.src = item.speaker === 'zhao'
+    ? 'Musou_mode/Tamat/Zhao_bubble.png'
+    : 'Musou_mode/Tamat/Anya_buble.png';
   dialogueText.textContent = item.text;
 }
 
@@ -523,10 +556,12 @@ function startEndingSequence() {
   });
 }
 
+// ─── EVENT LISTENERS ──────────────────────────────────────────────────────────
 btnStartOpening.addEventListener('click', (event) => {
   event.stopPropagation();
   startOpeningWithSound();
 });
+
 btnMusou.addEventListener('click', () => transitionTo('musou-screen'));
 btnEncyclopedia.addEventListener('click', () => transitionTo('encyclopedia-screen'));
 btnCiawi.addEventListener('click', () => startBattle('ciawi'));
@@ -553,8 +588,9 @@ backButtons.forEach((btn) => {
   });
 });
 
+// Reward screen: hanya bisa di-klik setelah audio selesai (khusus Ciawi)
 rewardImg.addEventListener('click', () => {
-  if (currentBattle === 'ciawi') {
+  if (currentBattle === 'ciawi' && rewardAudioDone) {
     stopAllAudio();
     transitionTo('menu-screen');
   }
