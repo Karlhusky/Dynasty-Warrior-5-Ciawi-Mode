@@ -167,6 +167,13 @@ function transitionTo(targetScreen, callback) {
   }, 550);
 }
 
+function skipOpening() {
+  if (!openingScreen.classList.contains('active')) return;
+
+  openingVideo.pause();
+  transitionTo('menu-screen');
+}
+
 /* ================= ENCYCLOPEDIA ================= */
 
 function resetEncyclopediaView() {
