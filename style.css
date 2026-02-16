@@ -88,6 +88,12 @@ body {
   gap: 12px;
 }
 
+#encyclopedia-screen {
+  padding: 16px;
+  background: linear-gradient(rgba(7, 13, 24, 0.72), rgba(7, 13, 24, 0.72)),
+    url('Musou_mode/Background2.png') center / cover no-repeat;
+}
+
 #menu-screen {
   background:
     linear-gradient(rgba(13, 8, 1, 0.48), rgba(13, 8, 1, 0.48)),
@@ -165,6 +171,90 @@ button:disabled {
   flex-direction: column;
   gap: 14px;
   width: min(550px, 90vw);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.ency-menu,
+.ency-submenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.ency-detail {
+  position: relative;
+  width: min(1040px, 94vw);
+  height: min(72vh, 640px);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.ency-detail-bg,
+.ency-detail-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.ency-detail-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ency-detail-overlay {
+  background: rgba(5, 7, 15, 0.62);
+}
+
+.ency-detail-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(220px, 32%) 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    'title title'
+    'image text'
+    'back back';
+  gap: 12px;
+  padding: 16px;
+}
+
+#ency-detail-title {
+  grid-area: title;
+  margin: 0;
+}
+
+#ency-detail-image {
+  grid-area: image;
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+#ency-detail-text {
+  grid-area: text;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow: auto;
+  padding: 12px;
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+}
+
+.back-local {
+  grid-area: back;
+  justify-self: start;
 }
 
 #battle-screen {
@@ -347,27 +437,10 @@ button:disabled {
   background: #000;
 }
 
-.reward-bubble {
+.reward-controls {
   position: absolute;
-  right: 2.6%;
-  bottom: 8.5%;
-  width: min(43vw, 700px);
-  min-height: 210px;
-  background: rgba(12, 12, 18, 0.66);
-  border: 1px solid rgba(255, 236, 210, 0.7);
-  border-radius: 8px;
-  padding: 14px;
-}
-
-.reward-bubble h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-
-.reward-bubble p {
-  margin-top: 0;
-  line-height: 1.45;
-  min-height: 92px;
+  right: 3%;
+  bottom: 6%;
 }
 
 .muted {
