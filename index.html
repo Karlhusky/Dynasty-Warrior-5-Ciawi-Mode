@@ -12,28 +12,17 @@
         <video id="opening-video" playsinline preload="auto">
           <source src="Opening.mp4" type="video/mp4" />
         </video>
-        <button id="btn-start-opening" class="opening-start">
-          ▶ Mulai Opening (dengan suara)
-        </button>
-         <button id="btn-skip-opening" class="opening-skip hidden">
-          ⏭ Skip Opening
-        </button>
-        <div class="overlay-hint">
-          Setelah opening dimulai: klik / tombol apa pun untuk skip
-        </div>
+        <button id="btn-start-opening" class="opening-start">▶ Mulai Opening (dengan suara)</button>
+        <div class="overlay-hint">Setelah opening dimulai: klik / tombol apa pun untuk skip</div>
       </section>
 
       <section id="menu-screen" class="screen">
         <div class="menu-frame">
           <button class="menu-line disabled" disabled>CHALLENGE MODE</button>
           <button class="menu-line disabled" disabled>FREE MODE</button>
-          <button id="btn-musou" class="menu-line menu-active blink">
-            MUSOU MODE
-          </button>
+          <button id="btn-musou" class="menu-line menu-active blink">MUSOU MODE</button>
           <button class="menu-line disabled" disabled>OPTIONS</button>
-          <button id="btn-encyclopedia" class="menu-line blink">
-            ENCYCLOPEDIA
-          </button>
+          <button id="btn-encyclopedia" class="menu-line blink">ENCYCLOPEDIA</button>
         </div>
       </section>
 
@@ -42,175 +31,61 @@
         <p>Pilih pertempuran:</p>
         <div class="battle-list">
           <button id="btn-ciawi">1. Pertempuran Ciawi</button>
-          <button id="btn-hutan" disabled>
-            2. Ekspedisi Hutan Selatan (Terkunci)
-          </button>
+          <button id="btn-hutan" disabled>2. Ekspedisi Hutan Selatan (Terkunci)</button>
         </div>
         <button class="back" data-back="menu-screen">← Kembali</button>
       </section>
-
-      <!-- ================= ENCYCLOPEDIA ================= -->
 
       <section id="encyclopedia-screen" class="screen panel-screen">
         <h2>Encyclopedia</h2>
-
-        <div id="encyclopedia-menu" class="ency-menu">
-          <p>Pilih kategori:</p>
-          <div class="battle-list">
-            <button data-ency-category="pertempuran">
-              Pertempuran
-            </button>
-            <button data-ency-category="tokoh">Tokoh</button>
-          </div>
-        </div>
-
-        <div id="encyclopedia-submenu" class="ency-submenu hidden">
-          <h3 id="ency-submenu-title"></h3>
-          <div id="ency-submenu-list" class="battle-list"></div>
-          <button id="btn-ency-back-main" class="back-local">
-            ← Kembali ke kategori
-          </button>
-        </div>
-
-        <div id="encyclopedia-detail" class="ency-detail hidden">
-          <img
-            id="ency-detail-bg"
-            class="ency-detail-bg"
-            src="Musou_mode/Background2.png"
-            alt="Latar belakang encyclopedia"
-          />
-          <div class="ency-detail-overlay"></div>
-
-          <div class="ency-detail-content">
-            <h3 id="ency-detail-title"></h3>
-            <img
-              id="ency-detail-image"
-              src="Encyclopedia/Tokoh/Zhao/Karakter1.png"
-              alt="Encyclopedia image"
-            />
-            <p id="ency-detail-text"></p>
-            <button id="btn-ency-back-sub" class="back-local">
-              ← Kembali
-            </button>
-          </div>
-        </div>
-
+        <p>Catatan tokoh dan pertempuran akan muncul di sini.</p>
+        <p class="muted">(Contoh awal: menu ini sudah aktif dan bisa dipilih dari halaman utama.)</p>
         <button class="back" data-back="menu-screen">← Kembali</button>
       </section>
 
-      <!-- ================= BATTLE ================= -->
-
       <section id="battle-screen" class="screen">
-        <img
-          id="battle-bg"
-          src="Musou_mode/Background.png"
-          alt="Background Pertempuran Ciawi"
-        />
-
+        <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran Ciawi" />
         <div class="battle-topbar">
           <div class="hp-block left">
             <div class="name">Zhào Bóyán Shànbà</div>
-            <div class="hp-bar">
-              <div id="hero-hp" class="hp-fill"></div>
-            </div>
+            <div class="hp-bar"><div id="hero-hp" class="hp-fill"></div></div>
           </div>
-
           <div class="hp-block right">
             <div class="name">Yuán Qīguó</div>
-            <div class="hp-bar">
-              <div id="enemy-hp" class="hp-fill enemy"></div>
-            </div>
+            <div class="hp-bar"><div id="enemy-hp" class="hp-fill enemy"></div></div>
           </div>
         </div>
 
-        <img
-          id="hero-idle"
-          class="idle left"
-          src="Musou_mode/Karakter1/Karakter1/Karakter1.png"
-          alt="Hero"
-        />
-        <img
-          id="enemy-idle"
-          class="idle right"
-          src="Musou_mode/Musuh1/Musuh1.png"
-          alt="Enemy"
-        />
+        <img id="hero-idle" class="idle left" src="Musou_mode/Karakter1/Karakter1/Karakter1.png" alt="Hero" />
+        <img id="enemy-idle" class="idle right" src="Musou_mode/Musuh1/Musuh1.png" alt="Enemy" />
 
-        <img
-          id="hero-reaction"
-          class="reaction hero"
-          src="Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png"
-          alt="Hero reaction"
-        />
-        <img
-          id="enemy-reaction"
-          class="reaction enemy"
-          src="Musou_mode/Musuh1/Menyerang.png"
-          alt="Enemy reaction"
-        />
-        <img
-          id="attack-effect"
-          class="effect"
-          src="effects/api.png"
-          alt="Attack effect"
-        />
+        <img id="hero-reaction" class="reaction hero" src="Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png" alt="Hero reaction" />
+        <img id="enemy-reaction" class="reaction enemy" src="Musou_mode/Musuh1/Menyerang.png" alt="Enemy reaction" />
+        <img id="attack-effect" class="effect" src="effects/api.png" alt="Attack effect" />
 
         <div id="battle-ui" class="battle-ui">
-          <h3 id="question-text">
-            Pertanyaan akan muncul di sini...
-          </h3>
+          <h3 id="question-text">Pertanyaan akan muncul di sini...</h3>
           <div id="choices" class="choices"></div>
-          <p id="battle-log">
-            Jawab pertanyaan dengan benar untuk menyerang!
-          </p>
+          <p id="battle-log">Jawab pertanyaan dengan benar untuk menyerang!</p>
         </div>
       </section>
 
-      <!-- ================= REWARD ================= -->
-
       <section id="reward-screen" class="screen">
-        <img
-          id="reward-img"
-          src="Musou_mode/Hadiah_Musuh1.png"
-          alt="Hadiah Musuh 1"
-        />
-        <div class="reward-controls">
-          <button class="back" data-back="menu-screen">
-            Kembali ke Menu
-          </button>
+        <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah Musuh 1" />
+        <div class="reward-bubble">
+          <h3>Tài Shǐ Lǎorén — Kakek Penjaga Arsip</h3>
+          <p id="reward-text"></p>
+          <button class="back" data-back="menu-screen">Kembali ke Menu</button>
         </div>
       </section>
 
       <div id="scene-fader" aria-hidden="true"></div>
     </main>
 
-    <!-- ================= AUDIO ================= -->
-
-    <audio
-      id="bgm-battle"
-      loop
-      src="Musou_mode/Background_perang.mp3"
-    ></audio>
+    <audio id="bgm-battle" loop src="Musou_mode/Background_perang.mp3"></audio>
     <audio id="sfx-enemy-attack"></audio>
-    <audio
-      id="sfx-enemy-hit"
-      src="Musou_mode/Musuh1/Attacked.mp3"
-    ></audio>
-    <audio
-      id="sfx-enemy-lose"
-      src="Musou_mode/Musuh1/Lose.mp3"
-    ></audio>
-
-    <!-- Tambahan baru -->
-    <audio
-      id="bgm-reward"
-      src="Musou_mode/Hadiah_Musuh1.mp3"
-    ></audio>
-    <audio
-      id="bgm-encyclopedia"
-      loop
-      src="Encyclopedia/Encyclopedia.mp3"
-    ></audio>
+    <audio id="sfx-enemy-hit" src="Musou_mode/Musuh1/Attacked.mp3"></audio>
+    <audio id="sfx-enemy-lose" src="Musou_mode/Musuh1/Lose.mp3"></audio>
 
     <script src="script.js"></script>
   </body>
