@@ -1,9 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dynasty Warrior 5 - Ciawi Mode (Sample)</title>
+    <title>Musou Mode Game</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -12,17 +11,25 @@
         <video id="opening-video" playsinline preload="auto">
           <source src="Opening.mp4" type="video/mp4" />
         </video>
-        <button id="btn-start-opening" class="opening-start">▶ Mulai Opening (dengan suara)</button>
-        <div class="overlay-hint">Setelah opening dimulai: klik / tombol apa pun untuk skip</div>
+        <button id="btn-start-opening" class="opening-start">
+          ▶ Mulai Opening (dengan suara)
+        </button>
+        <div class="overlay-hint">
+          Setelah opening dimulai: klik / tombol apa pun untuk skip
+        </div>
       </section>
 
       <section id="menu-screen" class="screen">
         <div class="menu-frame">
           <button class="menu-line disabled" disabled>CHALLENGE MODE</button>
           <button class="menu-line disabled" disabled>FREE MODE</button>
-          <button id="btn-musou" class="menu-line menu-active blink">MUSOU MODE</button>
+          <button id="btn-musou" class="menu-line menu-active blink">
+            MUSOU MODE
+          </button>
           <button class="menu-line disabled" disabled>OPTIONS</button>
-          <button id="btn-encyclopedia" class="menu-line blink">ENCYCLOPEDIA</button>
+          <button id="btn-encyclopedia" class="menu-line blink">
+            ENCYCLOPEDIA
+          </button>
         </div>
       </section>
 
@@ -38,6 +45,7 @@
 
       <section id="encyclopedia-screen" class="screen panel-screen">
         <h2>Encyclopedia</h2>
+
         <div id="encyclopedia-menu" class="ency-menu">
           <p>Pilih kategori:</p>
           <div class="battle-list">
@@ -45,57 +53,111 @@
             <button data-ency-category="tokoh">Tokoh</button>
           </div>
         </div>
-        
+
         <div id="encyclopedia-submenu" class="ency-submenu hidden">
           <h3 id="ency-submenu-title"></h3>
           <div id="ency-submenu-list" class="battle-list"></div>
-          <button id="btn-ency-back-main" class="back-local">← Kembali ke kategori</button>
+          <button id="btn-ency-back-main" class="back-local">
+            ← Kembali ke kategori
+          </button>
         </div>
 
         <div id="encyclopedia-detail" class="ency-detail hidden">
-          <img id="ency-detail-bg" class="ency-detail-bg" src="Musou_mode/Background2.png" alt="Latar belakang encyclopedia" />
+          <img
+            id="ency-detail-bg"
+            class="ency-detail-bg"
+            src="Musou_mode/Background2.png"
+            alt="Latar belakang encyclopedia"
+          />
           <div class="ency-detail-overlay"></div>
           <div class="ency-detail-content">
             <h3 id="ency-detail-title"></h3>
-            <img id="ency-detail-image" src="Encyclopedia/Tokoh/Zhao/Karakter1.png" alt="Encyclopedia image" />
+            <img
+              id="ency-detail-image"
+              src="Encyclopedia/Tokoh/Zhao/Karakter1.png"
+              alt="Encyclopedia image"
+            />
             <p id="ency-detail-text"></p>
-            <button id="btn-ency-back-sub" class="back-local">← Kembali</button>
+            <button id="btn-ency-back-sub" class="back-local">
+              ← Kembali
+            </button>
           </div>
         </div>
-        
+
         <button class="back" data-back="menu-screen">← Kembali</button>
       </section>
 
       <section id="battle-screen" class="screen">
-        <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran" />
+        <img
+          id="battle-bg"
+          src="Musou_mode/Background.png"
+          alt="Background Pertempuran"
+        />
+
         <div class="battle-topbar">
           <div class="hp-block left">
-           <div id="hero-name" class="name">Zhào Bóyán Shànbà</div>
-            <div class="hp-bar"><div id="hero-hp" class="hp-fill"></div></div>
+            <div id="hero-name" class="name">Zhào Bóyán Shànbà</div>
+            <div class="hp-bar">
+              <div id="hero-hp" class="hp-fill"></div>
+            </div>
           </div>
+
           <div class="hp-block right">
-           <div id="enemy-name" class="name">Yuán Qīguó</div>
-            <div class="hp-bar"><div id="enemy-hp" class="hp-fill enemy"></div></div>
+            <div id="enemy-name" class="name">Yuán Qīguó</div>
+            <div class="hp-bar">
+              <div id="enemy-hp" class="hp-fill enemy"></div>
+            </div>
           </div>
         </div>
 
-        <img id="hero-idle" class="idle left" src="Musou_mode/Karakter1/Karakter1/Karakter1.png" alt="Hero" />
-        <img id="support-idle" class="support hidden" src="Musou_mode/Karakter2/Karakter2.png" alt="Support" />
-        <img id="enemy-idle" class="idle right" src="Musou_mode/Musuh1/Musuh1.png" alt="Enemy" />
+        <img
+          id="hero-idle"
+          class="idle left"
+          src="Musou_mode/Karakter1/Karakter1/Karakter1.png"
+          alt="Hero"
+        />
+        <img
+          id="support-idle"
+          class="support hidden"
+          src="Musou_mode/Karakter2/Karakter2.png"
+          alt="Support"
+        />
+        <img
+          id="enemy-idle"
+          class="idle right"
+          src="Musou_mode/Musuh1/Musuh1.png"
+          alt="Enemy"
+        />
 
-        <img id="hero-reaction" class="reaction hero" src="Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png" alt="Hero reaction" />
-        <img id="enemy-reaction" class="reaction enemy" src="Musou_mode/Musuh1/Menyerang.png" alt="Enemy reaction" />
+        <img
+          id="hero-reaction"
+          class="reaction hero"
+          src="Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png"
+          alt="Hero reaction"
+        />
+        <img
+          id="enemy-reaction"
+          class="reaction enemy"
+          src="Musou_mode/Musuh1/Menyerang.png"
+          alt="Enemy reaction"
+        />
         <img id="attack-effect" class="effect" src="effects/api.png" alt="Attack effect" />
 
         <div id="battle-ui" class="battle-ui">
           <h3 id="question-text">Pertanyaan akan muncul di sini...</h3>
           <div id="choices" class="choices"></div>
-          <p id="battle-log">Jawab pertanyaan dengan benar untuk menyerang!</p>
+          <p id="battle-log">
+            Jawab pertanyaan dengan benar untuk menyerang!
+          </p>
         </div>
       </section>
 
       <section id="reward-screen" class="screen">
-       <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah" />
+        <img
+          id="reward-img"
+          src="Musou_mode/Hadiah_Musuh1.png"
+          alt="Hadiah"
+        />
         <div class="reward-controls">
           <button id="btn-reward-next">Kembali ke Menu</button>
         </div>
@@ -103,22 +165,48 @@
 
       <section id="tamat-before-screen" class="screen cinematic-screen">
         <video id="tamat-before-video" playsinline preload="auto">
-          <source src="Musou_mode/Tamat/Sebelum_ngobrol.mp4" type="video/mp4" />
+          <source
+            src="Musou_mode/Tamat/Sebelum_ngobrol.mp4"
+            type="video/mp4"
+          />
         </video>
-        <div class="overlay-hint">Cutscene berjalan otomatis (tidak bisa di-skip)</div>
+        <div class="overlay-hint">
+          Cutscene berjalan otomatis (tidak bisa di-skip)
+        </div>
       </section>
 
       <section id="dialogue-screen" class="screen">
-        <img id="dialogue-bg" src="Musou_mode/Tamat/Background_cinta.png" alt="Background Cinta" />
-        <img id="zhao-dialogue" class="dialogue-char left" src="Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png" alt="Zhao" />
-        <img id="anya-dialogue" class="dialogue-char right" src="Musou_mode/Karakter2/Bahagia.png" alt="Anya" />
+        <img
+          id="dialogue-bg"
+          src="Musou_mode/Tamat/Background_cinta.png"
+          alt="Background Cinta"
+        />
+        <img
+          id="zhao-dialogue"
+          class="dialogue-char left"
+          src="Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png"
+          alt="Zhao"
+        />
+        <img
+          id="anya-dialogue"
+          class="dialogue-char right"
+          src="Musou_mode/Karakter2/Bahagia.png"
+          alt="Anya"
+        />
 
         <div class="dialogue-bubble zhao">
-          <img src="Musou_mode/Tamat/Zhao_bubble.png" alt="Zhao bubble" />
+          <img
+            src="Musou_mode/Tamat/Zhao_bubble.png"
+            alt="Zhao bubble"
+          />
           <p id="zhao-line"></p>
         </div>
+
         <div class="dialogue-bubble anya">
-          <img src="Musou_mode/Tamat/Anya_buble.png" alt="Anya bubble" />
+          <img
+            src="Musou_mode/Tamat/Anya_buble.png"
+            alt="Anya bubble"
+          />
           <p id="anya-line"></p>
         </div>
 
@@ -130,18 +218,27 @@
 
       <section id="tamat-after-screen" class="screen cinematic-screen">
         <video id="tamat-after-video" playsinline preload="auto">
-          <source src="Musou_mode/Tamat/Sesudah_ngobrol.mp4" type="video/mp4" />
+          <source
+            src="Musou_mode/Tamat/Sesudah_ngobrol.mp4"
+            type="video/mp4"
+          />
         </video>
-        <div class="overlay-hint">Cutscene penutup berjalan otomatis</div>
+        <div class="overlay-hint">
+          Cutscene penutup berjalan otomatis
+        </div>
       </section>
 
       <section id="credits-screen" class="screen panel-screen">
         <h2>Tamat</h2>
-        <p class="muted">Terima kasih sudah menamatkan campaign selatan.</p>
+        <p class="muted">
+          Terima kasih sudah menamatkan campaign selatan.
+        </p>
         <div class="credits-frame">
           <div id="credits-list"></div>
         </div>
-        <button id="btn-credits-menu">Kembali ke Menu Utama</button>
+        <button id="btn-credits-menu">
+          Kembali ke Menu Utama
+        </button>
       </section>
 
       <div id="scene-fader" aria-hidden="true"></div>
@@ -149,12 +246,26 @@
 
     <audio id="bgm-battle" loop src="Musou_mode/Background_perang.mp3"></audio>
     <audio id="sfx-enemy-attack"></audio>
-    <audio id="sfx-enemy-hit" src="Musou_mode/Musuh1/Attacked.mp3"></audio>
-    <audio id="sfx-enemy-lose" src="Musou_mode/Musuh1/Lose.mp3"></audio>
+    <audio
+      id="sfx-enemy-hit"
+      src="Musou_mode/Musuh1/Attacked.mp3"
+    ></audio>
+    <audio
+      id="sfx-enemy-lose"
+      src="Musou_mode/Musuh1/Lose.mp3"
+    ></audio>
     <audio id="bgm-reward" src="Musou_mode/Hadiah_Musuh1.mp3"></audio>
-    <audio id="bgm-encyclopedia" loop src="Encyclopedia/Encyclopedia.mp3"></audio>
-    <audio id="bgm-love" loop src="Musou_mode/Tamat/Background_cinta.mp3"></audio>
-    
+    <audio
+      id="bgm-encyclopedia"
+      loop
+      src="Encyclopedia/Encyclopedia.mp3"
+    ></audio>
+    <audio
+      id="bgm-love"
+      loop
+      src="Musou_mode/Tamat/Background_cinta.mp3"
+    ></audio>
+
     <script src="script.js"></script>
   </body>
 </html>
