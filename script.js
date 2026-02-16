@@ -2,6 +2,7 @@ const screens = document.querySelectorAll('.screen');
 const openingScreen = document.getElementById('opening-screen');
 const openingVideo = document.getElementById('opening-video');
 const btnStartOpening = document.getElementById('btn-start-opening');
+const btnSkipOpening = document.getElementById('btn-skip-opening');
 const btnMusou = document.getElementById('btn-musou');
 const btnEncyclopedia = document.getElementById('btn-encyclopedia');
 const btnCiawi = document.getElementById('btn-ciawi');
@@ -98,8 +99,6 @@ const enemyHpMax = 4;
 let heroHp = heroHpMax;
 let enemyHp = enemyHpMax;
 let currentRound = 0;
-let attackCountHero = 0;
-let attackCountEnemy = 0;
 let openingStarted = false;
 
 const questions = [
@@ -174,6 +173,11 @@ function skipOpening() {
   transitionTo('menu-screen');
 }
 
+function handleOpeningSkipInput() {
+  if (!openingStarted) return;
+  skipOpening();
+}
+
 /* ================= ENCYCLOPEDIA ================= */
 
 function resetEncyclopediaView() {
@@ -217,6 +221,105 @@ async function showEncyclopediaDetail(item) {
   }
 }
 
+/* ================= BATTLE ================= */
+
+function updateHpUI() {
+  heroHpFill.style.width = `${(heroHp / heroHpMax) * 100}%`;
+  enemyHpFill.style.width = `${(enemyHp / enemyHpMax) * 100}%`;
+}
+
+function endBattle(playerWins) {
+  if (playerWins) {
+    battleLog.textContent = 'Musuh kalah! Menuju hadiah...';
+    setTimeout(() => transitionTo('reward-screen'), 900);
+    return;
+  }
+
+  battleLog.textContent = 'Kamu kalah. Kembali ke menu...';
+  setTimeout(() => transitionTo('menu-screen'), 900);
+}
+
+function enemyTurn() {
+  heroHp = Math.max(0, heroHp - 1);
+  updateHpUI();
+  battleLog.textContent = 'Jawaban salah! Musuh menyerang balik.';
+  sfxEnemyAttack.currentTime = 0;
+  sfxEnemyAttack.play().catch(() => {});
+
+  if (heroHp <= 0) {
+    endBattle(false);
+    return;
+  }
+
+  currentRound += 1;
+  renderQuestion();
+}
+
+function handleAnswer(selectedIndex) {
+  const question = questions[currentRound];
+  const isCorrect = selectedIndex === question.answer;
+
+  if (isCorrect) {
+    enemyHp = Math.max(0, enemyHp - 1);
+    updateHpUI();
+    battleLog.textContent = 'Jawaban benar! Musuh terkena serangan.';
+    sfxEnemyHit.currentTime = 0;
+    sfxEnemyHit.play().catch(() => {});
+
+    if (enemyHp <= 0) {
+      sfxEnemyLose.currentTime = 0;
+      sfxEnemyLose.play().catch(() => {});
+      endBattle(true);
+      return;
+    }
+
+    currentRound += 1;
+    renderQuestion();
+    return;
+  }
+
+  enemyTurn();
+}
+
+function renderQuestion() {
+  if (currentRound >= questions.length) {
+    currentRound = 0;
+  }
+
+  const question = questions[currentRound];
+  questionText.textContent = question.q;
+  choicesWrap.innerHTML = '';
+
+  question.choices.forEach((choice, index) => {
+    const button = document.createElement('button');
+    button.textContent = choice;
+    button.addEventListener('click', () => handleAnswer(index));
+    choicesWrap.appendChild(button);
+  });
+}
+
+function startBattle() {
+  heroHp = heroHpMax;
+  enemyHp = enemyHpMax;
+  currentRound = 0;
+
+  updateHpUI();
+  renderQuestion();
+  battleLog.textContent = 'Jawab pertanyaan dengan benar untuk menyerang!';
+
+  battleBgm.currentTime = 0;
+  battleBgm.volume = 0.35;
+  battleBgm.play().catch(() => {});
+
+  heroIdle.classList.remove('muted');
+  enemyIdle.classList.remove('muted');
+  heroReaction.classList.remove('active');
+  enemyReaction.classList.remove('active');
+  attackEffect.classList.remove('active');
+
+  transitionTo('battle-screen');
+}
+
 /* ================= EVENTS ================= */
 
 btnStartOpening.addEventListener('click', (event) => {
@@ -225,7 +328,18 @@ btnStartOpening.addEventListener('click', (event) => {
   openingVideo.muted = false;
   openingVideo.play().catch(() => {});
   btnStartOpening.classList.add('hidden');
+    btnSkipOpening.classList.remove('hidden');
 });
+
+btnSkipOpening.addEventListener('click', (event) => {
+  event.stopPropagation();
+  skipOpening();
+});
+
+openingScreen.addEventListener('click', handleOpeningSkipInput);
+document.addEventListener('keydown', handleOpeningSkipInput);
+document.addEventListener('touchstart', handleOpeningSkipInput, { passive: true });
+openingVideo.addEventListener('ended', () => transitionTo('menu-screen'));
 
 btnMusou.addEventListener('click', () => showScreen('musou-screen'));
 
@@ -255,7 +369,3 @@ backButtons.forEach((btn) => {
     transitionTo(target);
   });
 });
-
-openingScreen.addEventListener('click', skipOpening);
-document.addEventListener('keydown', skipOpening);
-openingVideo.addEventListener('ended', () => transitionTo('menu-screen'));
