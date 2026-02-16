@@ -38,8 +38,31 @@
 
       <section id="encyclopedia-screen" class="screen panel-screen">
         <h2>Encyclopedia</h2>
-        <p>Catatan tokoh dan pertempuran akan muncul di sini.</p>
-        <p class="muted">(Contoh awal: menu ini sudah aktif dan bisa dipilih dari halaman utama.)</p>
+        <div id="encyclopedia-menu" class="ency-menu">
+          <p>Pilih kategori:</p>
+          <div class="battle-list">
+            <button data-ency-category="pertempuran">Pertempuran</button>
+            <button data-ency-category="tokoh">Tokoh</button>
+          </div>
+        </div>
+        
+        <div id="encyclopedia-submenu" class="ency-submenu hidden">
+          <h3 id="ency-submenu-title"></h3>
+          <div id="ency-submenu-list" class="battle-list"></div>
+          <button id="btn-ency-back-main" class="back-local">← Kembali ke kategori</button>
+        </div>
+
+        <div id="encyclopedia-detail" class="ency-detail hidden">
+          <img id="ency-detail-bg" class="ency-detail-bg" src="Musou_mode/Background2.png" alt="Latar belakang encyclopedia" />
+          <div class="ency-detail-overlay"></div>
+          <div class="ency-detail-content">
+            <h3 id="ency-detail-title"></h3>
+            <img id="ency-detail-image" src="Encyclopedia/Tokoh/Zhao/Karakter1.png" alt="Encyclopedia image" />
+            <p id="ency-detail-text"></p>
+            <button id="btn-ency-back-sub" class="back-local">← Kembali</button>
+          </div>
+        </div>
+        
         <button class="back" data-back="menu-screen">← Kembali</button>
       </section>
 
@@ -72,9 +95,7 @@
 
       <section id="reward-screen" class="screen">
         <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah Musuh 1" />
-        <div class="reward-bubble">
-          <h3>Tài Shǐ Lǎorén — Kakek Penjaga Arsip</h3>
-          <p id="reward-text"></p>
+       <div class="reward-controls">
           <button class="back" data-back="menu-screen">Kembali ke Menu</button>
         </div>
       </section>
@@ -86,7 +107,9 @@
     <audio id="sfx-enemy-attack"></audio>
     <audio id="sfx-enemy-hit" src="Musou_mode/Musuh1/Attacked.mp3"></audio>
     <audio id="sfx-enemy-lose" src="Musou_mode/Musuh1/Lose.mp3"></audio>
-
+    <audio id="bgm-reward" src="Musou_mode/Hadiah_Musuh1.mp3"></audio>
+    <audio id="bgm-encyclopedia" loop src="Encyclopedia/Encyclopedia.mp3"></audio>
+    
     <script src="script.js"></script>
   </body>
 </html>
