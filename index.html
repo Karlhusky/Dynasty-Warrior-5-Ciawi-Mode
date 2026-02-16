@@ -31,7 +31,7 @@
         <p>Pilih pertempuran:</p>
         <div class="battle-list">
           <button id="btn-ciawi">1. Pertempuran Ciawi</button>
-          <button id="btn-hutan" disabled>2. Ekspedisi Hutan Selatan (Terkunci)</button>
+          <button id="btn-hutan">2. Ekspedisi Hutan Selatan</button>
         </div>
         <button class="back" data-back="menu-screen">← Kembali</button>
       </section>
@@ -67,19 +67,20 @@
       </section>
 
       <section id="battle-screen" class="screen">
-        <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran Ciawi" />
+        <img id="battle-bg" src="Musou_mode/Background.png" alt="Background Pertempuran" />
         <div class="battle-topbar">
           <div class="hp-block left">
-            <div class="name">Zhào Bóyán Shànbà</div>
+           <div id="hero-name" class="name">Zhào Bóyán Shànbà</div>
             <div class="hp-bar"><div id="hero-hp" class="hp-fill"></div></div>
           </div>
           <div class="hp-block right">
-            <div class="name">Yuán Qīguó</div>
+           <div id="enemy-name" class="name">Yuán Qīguó</div>
             <div class="hp-bar"><div id="enemy-hp" class="hp-fill enemy"></div></div>
           </div>
         </div>
 
         <img id="hero-idle" class="idle left" src="Musou_mode/Karakter1/Karakter1/Karakter1.png" alt="Hero" />
+        <img id="support-idle" class="support hidden" src="Musou_mode/Karakter2/Karakter2.png" alt="Support" />
         <img id="enemy-idle" class="idle right" src="Musou_mode/Musuh1/Musuh1.png" alt="Enemy" />
 
         <img id="hero-reaction" class="reaction hero" src="Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png" alt="Hero reaction" />
@@ -94,10 +95,53 @@
       </section>
 
       <section id="reward-screen" class="screen">
-        <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah Musuh 1" />
-       <div class="reward-controls">
-          <button class="back" data-back="menu-screen">Kembali ke Menu</button>
+       <img id="reward-img" src="Musou_mode/Hadiah_Musuh1.png" alt="Hadiah" />
+        <div class="reward-controls">
+          <button id="btn-reward-next">Kembali ke Menu</button>
         </div>
+      </section>
+
+      <section id="tamat-before-screen" class="screen cinematic-screen">
+        <video id="tamat-before-video" playsinline preload="auto">
+          <source src="Musou_mode/Tamat/Sebelum_ngobrol.mp4" type="video/mp4" />
+        </video>
+        <div class="overlay-hint">Cutscene berjalan otomatis (tidak bisa di-skip)</div>
+      </section>
+
+      <section id="dialogue-screen" class="screen">
+        <img id="dialogue-bg" src="Musou_mode/Tamat/Background_cinta.png" alt="Background Cinta" />
+        <img id="zhao-dialogue" class="dialogue-char left" src="Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png" alt="Zhao" />
+        <img id="anya-dialogue" class="dialogue-char right" src="Musou_mode/Karakter2/Bahagia.png" alt="Anya" />
+
+        <div class="dialogue-bubble zhao">
+          <img src="Musou_mode/Tamat/Zhao_bubble.png" alt="Zhao bubble" />
+          <p id="zhao-line"></p>
+        </div>
+        <div class="dialogue-bubble anya">
+          <img src="Musou_mode/Tamat/Anya_buble.png" alt="Anya bubble" />
+          <p id="anya-line"></p>
+        </div>
+
+        <div class="dialogue-choice-box">
+          <h3 id="dialogue-question">...</h3>
+          <div id="dialogue-choices" class="choices"></div>
+        </div>
+      </section>
+
+      <section id="tamat-after-screen" class="screen cinematic-screen">
+        <video id="tamat-after-video" playsinline preload="auto">
+          <source src="Musou_mode/Tamat/Sesudah_ngobrol.mp4" type="video/mp4" />
+        </video>
+        <div class="overlay-hint">Cutscene penutup berjalan otomatis</div>
+      </section>
+
+      <section id="credits-screen" class="screen panel-screen">
+        <h2>Tamat</h2>
+        <p class="muted">Terima kasih sudah menamatkan campaign selatan.</p>
+        <div class="credits-frame">
+          <div id="credits-list"></div>
+        </div>
+        <button id="btn-credits-menu">Kembali ke Menu Utama</button>
       </section>
 
       <div id="scene-fader" aria-hidden="true"></div>
@@ -109,6 +153,7 @@
     <audio id="sfx-enemy-lose" src="Musou_mode/Musuh1/Lose.mp3"></audio>
     <audio id="bgm-reward" src="Musou_mode/Hadiah_Musuh1.mp3"></audio>
     <audio id="bgm-encyclopedia" loop src="Encyclopedia/Encyclopedia.mp3"></audio>
+    <audio id="bgm-love" loop src="Musou_mode/Tamat/Background_cinta.mp3"></audio>
     
     <script src="script.js"></script>
   </body>
