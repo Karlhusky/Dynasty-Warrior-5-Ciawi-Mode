@@ -35,25 +35,7 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
  const choicesWrap = document.getElementById('choices');
  const battleLog = document.getElementById('battle-log');
  const sceneFader = document.getElementById('scene-fader');
--const rewardText = document.getElementById('reward-text');
- 
--const heroHpMax = 4;
--const enemyHpMax = 4;
--let heroHp = heroHpMax;
--let enemyHp = enemyHpMax;
--let currentRound = 0;
--let attackCountHero = 0;
--let attackCountEnemy = 0;
--let openingStarted = false;
--
--const rewardNarration =
--  'Zhào Bóyán Shànbà, terimalah Buku Gambar Kuno Ciawi ini. Pada tahun 214 M, buku gambar sangat langka—hanya penulis istana, ahli strategi, dan pemikir besar yang memilikinya. Catatlah peta, taktik, dan kisah kemenanganmu, agar ilmu ini bisa diwariskan ke generasi berikutnya.';
--
--const questions = [
--  {
--    q: 'Pulau terbesar di Indonesia adalah...',
--    choices: ['Jawa', 'Sumatra', 'Kalimantan', 'Sulawesi'],
--    answer: 2,
+
 +const rewardImg = document.getElementById('reward-img');
 +const btnRewardNext = document.getElementById('btn-reward-next');
 +
@@ -226,9 +208,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
 +
 +const dialogueScenes = [
    {
--    q: 'Siapa proklamator kemerdekaan Indonesia?',
--    choices: ['R.A. Kartini', 'Soekarno', 'Diponegoro', 'Cut Nyak Dien'],
--    answer: 1,
 +    question: 'Zhao: "Akhirnya aku menemukanmu, Anya. Apa yang paling kamu rindukan?"',
 +    zhaoReaction: 'Musou_mode/Karakter1/Karakter1/Percakapan/Penasaran.png',
 +    anyaReaction: 'Musou_mode/Karakter2/Bahagia.png',
@@ -251,9 +230,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
 +    ],
    },
    {
--    q: 'Candi Borobudur terletak di provinsi...',
--    choices: ['Jawa Tengah', 'Bali', 'Jawa Barat', 'Banten'],
--    answer: 0,
 +    question: 'Anya: "Perang ini berat... apa langkahmu berikutnya?"',
 +    zhaoReaction: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
 +    anyaReaction: 'Musou_mode/Karakter2/Sedih.png',
@@ -276,9 +252,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
 +    ],
    },
    {
--    q: 'Selat yang memisahkan Jawa dan Sumatra adalah...',
--    choices: ['Selat Sunda', 'Selat Makassar', 'Selat Bali', 'Selat Karimata'],
--    answer: 0,
 +    question: 'Zhao: "Setelah semua ini, bagaimana kita dikenang?"',
 +    zhaoReaction: 'Musou_mode/Karakter1/Karakter1/Percakapan/Kaget.png',
 +    anyaReaction: 'Musou_mode/Karakter2/Kaget.png',
@@ -328,7 +301,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
    screens.forEach((s) => s.classList.remove('active'));
    document.getElementById(id).classList.add('active');
  
--  if (id !== 'battle-screen') {
 +  const inBattle = id === 'battle-screen';
 +  const inReward = id === 'reward-screen';
 +  const inEncyclopedia = id === 'encyclopedia-screen';
@@ -398,8 +370,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
  }
  
  function updateHpBars() {
--  heroHpFill.style.width = `${(heroHp / heroHpMax) * 100}%`;
--  enemyHpFill.style.width = `${(enemyHp / enemyHpMax) * 100}%`;
 +  heroHpFill.style.width = `${Math.max(0, (heroHp / heroHpMax) * 100)}%`;
 +  enemyHpFill.style.width = `${Math.max(0, (enemyHp / enemyHpMax) * 100)}%`;
  }
@@ -442,7 +412,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
 +}
 +
  function askQuestion() {
--  if (currentRound >= 4 || heroHp <= 0 || enemyHp <= 0) {
 +  if (!currentBattleKey) return;
 +  const config = battleConfigs[currentBattleKey];
 +
@@ -451,8 +420,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
      return;
    }
  
--  const item = questions[currentRound % questions.length];
--  questionText.textContent = `Ronde ${currentRound + 1}/4 — ${item.q}`;
 +  const item = config.questions[currentRound % config.questions.length];
 +  questionText.textContent = `Ronde ${currentRound + 1}/${config.rounds} — ${item.q}`;
    choicesWrap.innerHTML = '';
@@ -476,7 +443,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
    if (correct) {
      attackCountHero += 1;
      enemyHp -= 1;
--    battleLog.textContent = 'Benar! Zhào Bóyán Shànbà menyerang Yuán Qīguó!';
 +    battleLog.textContent = `Benar! ${config.heroName} menyerang ${config.enemyName}!`;
  
      const heroAttackAlt = attackCountHero % 2 === 0;
@@ -486,7 +452,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
          ? 'Musou_mode/Karakter1/Karakter1/Battle/Menyindir_2.png'
          : 'Musou_mode/Karakter1/Karakter1/Battle/Menyindir.png',
      );
--    showReaction(enemyReaction, 'Musou_mode/Musuh1/Terkena_serangan.png');
 +    showReaction(enemyReaction, config.enemyReactionHit);
      showEffect(attackCountHero % 2 === 0 ? 'effects/petir.PNG' : 'effects/api.png', true);
      playAttackMotion(true);
@@ -498,20 +463,17 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
    } else {
      attackCountEnemy += 1;
      heroHp -= 1;
--    battleLog.textContent = 'Salah! Yuán Qīguó membalas serangan!';
 +    battleLog.textContent = `Salah! ${config.enemyName} membalas serangan!`;
  
      const enemyAttackAlt = attackCountEnemy % 2 === 0;
      showReaction(
        enemyReaction,
--      enemyAttackAlt ? 'Musou_mode/Musuh1/Menyerang2.png' : 'Musou_mode/Musuh1/Menyerang.png',
 +      enemyAttackAlt ? config.enemyReactionAttack2 : config.enemyReactionAttack1,
      );
      showReaction(heroReaction, 'Musou_mode/Karakter1/Karakter1/Battle/Terkena_serangan.png');
      showEffect(attackCountEnemy % 2 === 0 ? 'effects/Uang_petir.png' : 'effects/Uang_api.png', false);
      playAttackMotion(false);
- 
--    sfxEnemyAttack.src = enemyAttackAlt ? 'Musou_mode/Musuh1/Attack2.mp3' : 'Musou_mode/Musuh1/Attack1.mp3';
+
 +    sfxEnemyAttack.src = enemyAttackAlt ? config.enemyAttackSfx2 : config.enemyAttackSfx1;
      sfxEnemyAttack.currentTime = 0;
      sfxEnemyAttack.volume = 1;
@@ -519,19 +481,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
    }
  
    updateHpBars();
--  setTimeout(askQuestion, 2000);
--}
--
--function typeRewardText(text) {
--  rewardText.textContent = '';
--  const words = text.split(' ');
--  let i = 0;
--
--  const timer = setInterval(() => {
--    rewardText.textContent += `${words[i]} `;
--    i += 1;
--    if (i >= words.length) clearInterval(timer);
--  }, 85);
 +  setTimeout(askQuestion, 1900);
  }
  
@@ -541,10 +490,8 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
    const heroWon = enemyHp <= heroHp;
  
    if (heroWon) {
--    battleLog.textContent = 'Kemenangan! Zhào Bóyán Shànbà memenangkan Pertempuran Ciawi.';
 +    battleLog.textContent = `Kemenangan! ${config.heroName} memenangkan ${config.title}.`;
      showReaction(heroReaction, 'Musou_mode/Karakter1/Karakter1/Battle/Menang.png');
--    showReaction(enemyReaction, 'Musou_mode/Musuh1/Kalah.png');
 +    showReaction(enemyReaction, config.enemyReactionLose);
 +
 +    sfxEnemyLose.src = config.enemyLoseSfx;
@@ -557,22 +504,18 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
 +    }
 +
      setTimeout(() => {
--      transitionTo('reward-screen', () => typeRewardText(rewardNarration));
 +      rewardImg.src = config.rewardImage;
 +      btnRewardNext.textContent = config.rewardButtonText;
 +      transitionTo('reward-screen');
      }, 2100);
    } else {
--    battleLog.textContent = 'Kalah! Yuán Qīguó masih unggul. Coba lagi dari menu Musou.';
 +    battleLog.textContent = `Kalah! ${config.enemyName} masih unggul. Coba lagi.`;
      showReaction(heroReaction, 'Musou_mode/Karakter1/Karakter1/Battle/Kalah.png');
--    showReaction(enemyReaction, 'Musou_mode/Musuh1/Menang.png');
 +    showReaction(enemyReaction, config.enemyReactionWin);
      setTimeout(() => transitionTo('musou-screen'), 2100);
    }
  }
  
--function startBattle() {
 +function startBattle(modeKey) {
 +  const config = battleConfigs[modeKey];
 +  if (!config) return;
@@ -585,7 +528,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
    attackCountEnemy = 0;
    updateHpBars();
  
--  battleLog.textContent = 'Pertempuran dimulai! Jawab 4 soal untuk menentukan pemenang.';
 +  setupBattleVisuals(config);
 +
 +  battleLog.textContent = `Pertempuran dimulai! Menangkan ${config.rounds} ronde untuk menang.`;
@@ -722,8 +664,6 @@ index baf9f2bfa1990ca2cc1e4c55b22b0afd48eb3a07..7155d4e5ccfdc3af76b6e96016183c8d
  });
 +
  btnMusou.addEventListener('click', () => showScreen('musou-screen'));
--btnEncyclopedia.addEventListener('click', () => showScreen('encyclopedia-screen'));
--btnCiawi.addEventListener('click', startBattle);
 +btnEncyclopedia.addEventListener('click', () => {
 +  showScreen('encyclopedia-screen');
 +  resetEncyclopediaView();
