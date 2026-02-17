@@ -179,31 +179,73 @@ const battleConfig = {
 const dialogueScript = [
   {
     speaker: 'zhao',
-    text: 'Anya! Akhirnya aku menemukanmu di Hutan Selatan. Aku khawatir sekali.',
+    text: 'Anya! Akhirnya aku menemukanmu. Aku sudah mencarimu ke seluruh hutan ini.',
     zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Kaget.png',
     anya: 'Musou_mode/Karakter2/Kaget.png',
   },
   {
     speaker: 'anya',
-    text: 'Zhao... aku sempat takut. Tapi waktu melihatmu datang, aku jadi tenang.',
+    text: 'Zhao... kamu benar-benar datang. Aku pikir tidak ada yang akan menyelamatkanku.',
     zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Penasaran.png',
     anya: 'Musou_mode/Karakter2/Biasa.png',
   },
   {
     speaker: 'zhao',
-    text: 'Aku berjanji tidak akan membiarkanmu sendirian lagi. Kita pulang bersama.',
+    text: 'Jangan pernah berpikir begitu. Selama aku masih bisa berdiri, aku tidak akan membiarkanmu.',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
+    anya: 'Musou_mode/Karakter2/Biasa.png',
+  },
+  {
+    speaker: 'anya',
+    text: 'L\u00edn Z\u014dng\u2019\u00e8 sangat kuat... kamu tidak terluka kan, Zhao?',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
+    anya: 'Musou_mode/Karakter2/Kaget.png',
+  },
+  {
+    speaker: 'zhao',
+    text: 'Hanya lecet kecil. Yang penting kamu baik-baik saja. Itu jauh lebih berarti.',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
+    anya: 'Musou_mode/Karakter2/Bahagia.png',
+  },
+  {
+    speaker: 'anya',
+    text: 'Zhao... kenapa kamu mau berjuang sekeras ini untukku?',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Penasaran.png',
+    anya: 'Musou_mode/Karakter2/Biasa.png',
+  },
+  {
+    speaker: 'zhao',
+    text: 'Karena kamu bukan sekadar orang yang harus dilindungi. Kamu adalah alasanku untuk terus berjuang.',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
+    anya: 'Musou_mode/Karakter2/Bahagia.png',
+  },
+  {
+    speaker: 'anya',
+    text: 'Zhao... aku tidak tahu harus berkata apa. Tapi aku sangat bersyukur kamu ada.',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
+    anya: 'Musou_mode/Karakter2/Bahagia.png',
+  },
+  {
+    speaker: 'zhao',
+    text: 'Aku berjanji tidak akan membiarkanmu sendirian lagi. Mulai hari ini, kita melangkah bersama.',
     zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
     anya: 'Musou_mode/Karakter2/Bahagia.png',
   },
   {
     speaker: 'anya',
     text: 'Terima kasih, Zhao. Hari ini aku tahu... aku bisa selalu percaya padamu.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Penasaran.png',
     anya: 'Musou_mode/Karakter2/Bahagia.png',
   },
   {
     speaker: 'zhao',
-    text: 'Ayo, kita mulai babak baru. Apa pun yang datang, kita hadapi berdua.',
+    text: 'Dan aku percaya padamu juga, Anya. Kamu lebih kuat dari yang kamu kira.',
+    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
+    anya: 'Musou_mode/Karakter2/Bahagia.png',
+  },
+  {
+    speaker: 'anya',
+    text: 'Ayo pulang, Zhao. Bersama-sama. Apapun yang menanti di depan, kita hadapi berdua.',
     zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
     anya: 'Musou_mode/Karakter2/Bahagia.png',
   },
@@ -364,18 +406,24 @@ function answerQuestion(selected, answer) {
 
 // ─── WIN ANIMATION ────────────────────────────────────────────────────────────
 function showWinAnimation(callback) {
-  // Gerakkan Karakter1 ke tengah
+  // Karakter1 gerak ke tengah
   heroIdle.classList.add('win-center');
+
+  // Kalau Hutan Selatan, Karakter2 ikut ke tengah juga (sedikit di kanan Karakter1)
+  if (currentBattle === 'hutan') {
+    capturedIdle.classList.add('win-center-captured');
+  }
 
   // Tampilkan overlay "Kamu Menang!"
   winOverlay.classList.remove('hidden');
   winOverlay.classList.add('visible');
 
-  // Setelah 3 detik, sembunyikan overlay & reset posisi hero, lalu jalankan callback
+  // Setelah 3 detik, bersihkan semua dan jalankan callback
   setTimeout(() => {
     winOverlay.classList.remove('visible');
     winOverlay.classList.add('hidden');
     heroIdle.classList.remove('win-center');
+    capturedIdle.classList.remove('win-center-captured');
     if (typeof callback === 'function') callback();
   }, 3000);
 }
@@ -387,20 +435,16 @@ function showRewardAndProceed() {
   rewardAudioDone = false;
 
   transitionTo('reward-screen', () => {
-    // Audio mulai SETELAH masuk reward screen
     rewardBgm.src = conf.rewardBgm;
     rewardBgm.volume = 0.45;
     rewardBgm.currentTime = 0;
     rewardBgm.play().catch(() => {});
 
-    // Setelah audio selesai
     rewardBgm.onended = () => {
       rewardAudioDone = true;
       if (conf.rewardAutoNext) {
-        // Hutan Selatan: otomatis lanjut ke ending
         startEndingSequence();
       }
-      // Ciawi: tunggu klik dari user
     };
   });
 }
@@ -419,7 +463,6 @@ function endBattle() {
     sfxEnemyLose.volume = 1;
     sfxEnemyLose.play().catch(() => {});
 
-    // Tampilkan animasi menang dulu, baru ke reward
     setTimeout(() => {
       battleBgm.pause();
       battleBgm.currentTime = 0;
@@ -588,7 +631,6 @@ backButtons.forEach((btn) => {
   });
 });
 
-// Reward screen: hanya bisa di-klik setelah audio selesai (khusus Ciawi)
 rewardImg.addEventListener('click', () => {
   if (currentBattle === 'ciawi' && rewardAudioDone) {
     stopAllAudio();
