@@ -565,6 +565,15 @@ function renderDialogueStep() {
     ? 'Musou_mode/Tamat/Zhao_bubble.png'
     : 'Musou_mode/Tamat/Anya_buble.png';
   dialogueText.textContent = item.text;
+
+  // Siapa yang ngomong dapat class active-speaker
+  if (item.speaker === 'zhao') {
+    dialogueZhao.classList.add('active-speaker');
+    dialogueAnya.classList.remove('active-speaker');
+  } else {
+    dialogueAnya.classList.add('active-speaker');
+    dialogueZhao.classList.remove('active-speaker');
+  }
 }
 
 function startDialogueScene() {
