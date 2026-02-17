@@ -412,17 +412,17 @@ button:hover,
 
 .dialogue-char {
   position: absolute;
-  bottom: 12px;
-  width: min(28vw, 360px);
+  bottom: 230px;
+  width: min(18vw, 220px);
   z-index: 2;
 }
 
 .dialogue-char.left {
-  left: 6%;
+  left: 2%;
 }
 
 .dialogue-char.right {
-  right: 6%;
+  right: 2%;
 }
 
 .dialogue-box {
