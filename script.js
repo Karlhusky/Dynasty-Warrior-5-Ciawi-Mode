@@ -406,19 +406,15 @@ function answerQuestion(selected, answer) {
 
 // ─── WIN ANIMATION ────────────────────────────────────────────────────────────
 function showWinAnimation(callback) {
-  // Karakter1 gerak ke tengah
   heroIdle.classList.add('win-center');
 
-  // Kalau Hutan Selatan, Karakter2 ikut ke tengah juga (sedikit di kanan Karakter1)
   if (currentBattle === 'hutan') {
     capturedIdle.classList.add('win-center-captured');
   }
 
-  // Tampilkan overlay "Kamu Menang!"
   winOverlay.classList.remove('hidden');
   winOverlay.classList.add('visible');
 
-  // Setelah 3 detik, bersihkan semua dan jalankan callback
   setTimeout(() => {
     winOverlay.classList.remove('visible');
     winOverlay.classList.add('hidden');
@@ -559,14 +555,19 @@ function renderDialogueStep() {
     return;
   }
 
+  // Update gambar karakter sesuai ekspresi dialog
   dialogueZhao.src = item.zhao;
   dialogueAnya.src = item.anya;
+
+  // Update bubble sesuai speaker
   dialogueBubble.src = item.speaker === 'zhao'
     ? 'Musou_mode/Tamat/Zhao_bubble.png'
     : 'Musou_mode/Tamat/Anya_buble.png';
+
+  // Update teks
   dialogueText.textContent = item.text;
 
-  // Siapa yang ngomong dapat class active-speaker
+  // Yang ngomong jadi full body besar (active-speaker), yang diam jadi portrait kecil
   if (item.speaker === 'zhao') {
     dialogueZhao.classList.add('active-speaker');
     dialogueAnya.classList.remove('active-speaker');
