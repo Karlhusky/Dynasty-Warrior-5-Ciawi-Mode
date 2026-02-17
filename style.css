@@ -410,18 +410,39 @@ button:hover,
   justify-content: center;
 }
 
+./* Default: portrait kecil di pojok atas */
 .dialogue-char {
   position: absolute;
-  bottom: 230px;
-  width: min(18vw, 220px);
-  z-index: 2;
+  top: 12px;
+  width: min(14vw, 180px);
+  z-index: 4;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .dialogue-char.left {
-  left: 2%;
+  left: 12px;
 }
 
 .dialogue-char.right {
+  right: 12px;
+}
+
+/* Yang sedang ngomong: full body besar di bawah */
+.dialogue-char.active-speaker {
+  top: auto;
+  bottom: 230px;
+  width: min(28vw, 360px);
+  border: none;
+  border-radius: 0;
+}
+
+.dialogue-char.left.active-speaker {
+  left: 2%;
+}
+
+.dialogue-char.right.active-speaker {
   right: 2%;
 }
 
