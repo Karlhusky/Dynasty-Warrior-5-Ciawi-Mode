@@ -498,3 +498,11 @@ button:hover,
   transform: translateX(-50%);
   transition: left 0.8s ease, transform 0.8s ease;
 }
+
+/* Karakter2 ikut ke tengah saat menang di Hutan Selatan */
+.idle.win-center-captured {
+  right: auto;
+  left: calc(50% + 120px);
+  opacity: 0.9;
+  transition: left 0.8s ease;
+}
