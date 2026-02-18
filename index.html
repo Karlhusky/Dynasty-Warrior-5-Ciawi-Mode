@@ -125,15 +125,19 @@
         <video id="ending-video" playsinline preload="auto"></video>
       </section>
 
-      <!-- DIALOGUE SCREEN -->
+      <!-- DIALOGUE SCREEN (Simplified - just full screen images) -->
       <section id="dialogue-screen" class="screen">
-        <img id="dialogue-bg" src="Musou_mode/Tamat/Background_cinta.png" alt="Latar percakapan" />
-        <img id="dialogue-zhao" class="dialogue-char left" src="Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png" alt="Zhao" />
-        <img id="dialogue-anya" class="dialogue-char right" src="Musou_mode/Karakter2/Bahagia.png" alt="Anya" />
-        <div id="dialogue-box" class="dialogue-box">
-          <img id="dialogue-bubble" src="Musou_mode/Tamat/Zhao_bubble.png" alt="bubble" />
-          <p id="dialogue-text">...</p>
-          <button id="dialogue-next">Lanjut</button>
+        <img id="dialogue-image" src="Percakapan/1.jpg" alt="Percakapan" />
+        <button id="dialogue-next">Lanjut</button>
+      </section>
+
+      <!-- BIRTHDAY / LETTER SCREEN -->
+      <section id="birthday-screen" class="screen">
+        <div class="letter-container">
+          <div class="letter-paper">
+            <p id="letter-text"></p>
+            <button id="btn-back-to-menu" class="hidden">Kembali ke Menu</button>
+          </div>
         </div>
       </section>
 
