@@ -159,6 +159,7 @@ button {
   background:
     linear-gradient(rgba(6, 12, 28, 0.72), rgba(6, 12, 28, 0.72)),
     url('Musou_mode/Background2.png') center / cover no-repeat;
+  overflow-y: auto;
 }
 
 #encyclopedia-screen h2,
