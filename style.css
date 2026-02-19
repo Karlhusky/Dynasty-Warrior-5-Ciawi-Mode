@@ -430,10 +430,37 @@ button:hover,
 
 /* ─── BIRTHDAY / LETTER SCREEN ──────────────────────────────────────────────── */
 #birthday-screen {
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
   overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated hearts background */
+#birthday-screen::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 182, 193, 0.4) 2px, transparent 2px),
+    radial-gradient(circle, rgba(255, 105, 180, 0.3) 3px, transparent 3px),
+    radial-gradient(circle, rgba(255, 192, 203, 0.35) 2px, transparent 2px);
+  background-size: 50px 50px, 80px 80px, 100px 100px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  animation: floatHearts 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes floatHearts {
+  0% {
+    background-position: 0 0, 40px 60px, 130px 270px;
+  }
+  100% {
+    background-position: 0 -1000px, 40px -940px, 130px -730px;
+  }
 }
 
 .letter-container {
@@ -441,8 +468,10 @@ button:hover,
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 100%;
-  padding: 40px 20px;
+  min-height: 100vh;
+  padding: 80px 20px 80px 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .letter-paper {
@@ -450,6 +479,7 @@ button:hover,
   width: min(800px, 90vw);
   background: linear-gradient(to bottom, #f4e8d0 0%, #e8d9c0 100%);
   padding: 60px 50px;
+  margin: 40px 0;
   border-radius: 4px;
   box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.5),
