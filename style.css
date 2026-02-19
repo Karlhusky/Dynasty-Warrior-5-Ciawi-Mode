@@ -177,7 +177,8 @@ button {
 
 button,
 .ency-item,
-#dialogue-next {
+#dialogue-next,
+#btn-back-to-menu {
   border: 1px solid rgba(255, 255, 255, 0.4);
   background: linear-gradient(180deg, #3f68be, #244279);
   color: #fff;
@@ -187,7 +188,8 @@ button,
 
 button:hover,
 .ency-item:hover,
-#dialogue-next:hover {
+#dialogue-next:hover,
+#btn-back-to-menu:hover {
   filter: brightness(1.08);
 }
 
@@ -197,7 +199,6 @@ button:hover,
 }
 
 #battle-bg,
-#dialogue-bg,
 #ency-bg,
 #reward-img {
   position: absolute;
@@ -404,98 +405,100 @@ button:hover,
   justify-content: center;
 }
 
-/* ─── DIALOGUE SCREEN ────────────────────────────────────────────────────── */
+/* ─── DIALOGUE SCREEN (Simplified - full screen image) ─────────────────────── */
 #dialogue-screen {
   align-items: center;
   justify-content: center;
+  background: #000;
 }
 
-/* Default: portrait kecil di pojok atas */
-.dialogue-char {
-  position: absolute;
-  top: 14px;
-  width: min(13vw, 160px);
-  height: min(13vw, 160px);
-  object-fit: cover;
-  object-position: top;
-  z-index: 4;
-  border: 2px solid rgba(255, 255, 220, 0.7);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.dialogue-char.left {
-  left: 14px;
-  top: 14px;
-  bottom: auto;
-  width: min(13vw, 160px);
-  height: min(13vw, 160px);
-}
-
-.dialogue-char.right {
-  right: 14px;
-  top: 14px;
-  bottom: auto;
-  width: min(13vw, 160px);
-  height: min(13vw, 160px);
-}
-
-/* Yang sedang ngomong: full body besar di bawah */
-.dialogue-char.active-speaker {
-  top: auto;
-  bottom: 240px;
-  width: min(26vw, 340px);
-  height: auto;
-  object-fit: contain;
-  object-position: center;
-  border: none;
-  border-radius: 0;
-}
-
-.dialogue-char.left.active-speaker {
-  left: 2%;
-  right: auto;
-}
-
-.dialogue-char.right.active-speaker {
-  right: 2%;
-  left: auto;
-}
-
-.dialogue-box {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(980px, 95vw);
-  min-height: 230px;
-  z-index: 5;
-}
-
-#dialogue-bubble {
+#dialogue-image {
   width: 100%;
-  height: 230px;
-  object-fit: fill;
-}
-
-#dialogue-text {
-  position: absolute;
-  left: 100px;
-  right: 130px;
-  top: 62px;
-  bottom: 50px;
-  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-  line-height: 1.5;
-  color: #1e1a16;
-  overflow: hidden;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
 }
 
 #dialogue-next {
   position: absolute;
-  right: 28px;
-  bottom: 22px;
-  background: #664423;
-  z-index: 6;
+  right: 32px;
+  bottom: 32px;
+  z-index: 10;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+}
+
+/* ─── BIRTHDAY / LETTER SCREEN ──────────────────────────────────────────────── */
+#birthday-screen {
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+  overflow-y: auto;
+}
+
+.letter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 40px 20px;
+}
+
+.letter-paper {
+  position: relative;
+  width: min(800px, 90vw);
+  background: linear-gradient(to bottom, #f4e8d0 0%, #e8d9c0 100%);
+  padding: 60px 50px;
+  border-radius: 4px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 80px rgba(139, 103, 66, 0.15);
+  border: 1px solid rgba(101, 67, 33, 0.3);
+}
+
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 28px,
+    rgba(139, 103, 66, 0.08) 28px,
+    rgba(139, 103, 66, 0.08) 29px
+  );
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+#letter-text {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  line-height: 1.85;
+  color: #3a2817;
+  white-space: pre-wrap;
+  text-align: justify;
+  position: relative;
+  z-index: 1;
+}
+
+#btn-back-to-menu {
+  margin-top: 32px;
+  padding: 14px 32px;
+  font-size: 1.05rem;
+  background: linear-gradient(180deg, #8b6742, #6b4e2e);
+  border-color: rgba(61, 42, 24, 0.6);
+  position: relative;
+  z-index: 2;
+}
+
+#btn-back-to-menu.hidden {
+  display: none;
+}
+
+#btn-back-to-menu:hover {
+  filter: brightness(1.15);
 }
 
 /* ─── WIN OVERLAY ────────────────────────────────────────────────────────── */
