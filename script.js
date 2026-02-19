@@ -39,11 +39,11 @@ const winOverlay = document.getElementById('win-overlay');
 
 const rewardImg = document.getElementById('reward-img');
 const endingVideo = document.getElementById('ending-video');
-const dialogueZhao = document.getElementById('dialogue-zhao');
-const dialogueAnya = document.getElementById('dialogue-anya');
-const dialogueBubble = document.getElementById('dialogue-bubble');
-const dialogueText = document.getElementById('dialogue-text');
+const dialogueImage = document.getElementById('dialogue-image');
 const dialogueNext = document.getElementById('dialogue-next');
+
+const letterText = document.getElementById('letter-text');
+const btnBackToMenu = document.getElementById('btn-back-to-menu');
 
 const encyBg = document.getElementById('ency-bg');
 const encyTitle = document.getElementById('ency-title');
@@ -63,7 +63,6 @@ let openingStarted = false;
 let currentBattle = 'ciawi';
 let pendingEndingSequence = false;
 let dialogueIndex = 0;
-let activeDialogue = [];
 let rewardAudioDone = false;
 
 const encyclopediaData = {
@@ -176,80 +175,39 @@ const battleConfig = {
   },
 };
 
-const dialogueScript = [
-  {
-    speaker: 'zhao',
-    text: 'Anya! Akhirnya aku menemukanmu. Aku sudah mencarimu ke seluruh hutan ini.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Kaget.png',
-    anya: 'Musou_mode/Karakter2/Kaget.png',
-  },
-  {
-    speaker: 'anya',
-    text: 'Zhao... kamu benar-benar datang. Aku pikir tidak ada yang akan menyelamatkanku.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Penasaran.png',
-    anya: 'Musou_mode/Karakter2/Biasa.png',
-  },
-  {
-    speaker: 'zhao',
-    text: 'Jangan pernah berpikir begitu. Selama aku masih bisa berdiri, aku tidak akan membiarkanmu.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Biasa.png',
-  },
-  {
-    speaker: 'anya',
-    text: 'L\u00edn Z\u014dng\u2019\u00e8 sangat kuat... kamu tidak terluka kan, Zhao?',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Kaget.png',
-  },
-  {
-    speaker: 'zhao',
-    text: 'Hanya lecet kecil. Yang penting kamu baik-baik saja. Itu jauh lebih berarti.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Bahagia.png',
-  },
-  {
-    speaker: 'anya',
-    text: 'Zhao... kenapa kamu mau berjuang sekeras ini untukku?',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Penasaran.png',
-    anya: 'Musou_mode/Karakter2/Biasa.png',
-  },
-  {
-    speaker: 'zhao',
-    text: 'Karena kamu bukan sekadar orang yang harus dilindungi. Kamu adalah alasanku untuk terus berjuang.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Bahagia.png',
-  },
-  {
-    speaker: 'anya',
-    text: 'Zhao... aku tidak tahu harus berkata apa. Tapi aku sangat bersyukur kamu ada.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Bahagia.png',
-  },
-  {
-    speaker: 'zhao',
-    text: 'Aku berjanji tidak akan membiarkanmu sendirian lagi. Mulai hari ini, kita melangkah bersama.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Bahagia.png',
-  },
-  {
-    speaker: 'anya',
-    text: 'Terima kasih, Zhao. Hari ini aku tahu... aku bisa selalu percaya padamu.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Penasaran.png',
-    anya: 'Musou_mode/Karakter2/Bahagia.png',
-  },
-  {
-    speaker: 'zhao',
-    text: 'Dan aku percaya padamu juga, Anya. Kamu lebih kuat dari yang kamu kira.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Bahagia.png',
-  },
-  {
-    speaker: 'anya',
-    text: 'Ayo pulang, Zhao. Bersama-sama. Apapun yang menanti di depan, kita hadapi berdua.',
-    zhao: 'Musou_mode/Karakter1/Karakter1/Percakapan/Biasa.png',
-    anya: 'Musou_mode/Karakter2/Bahagia.png',
-  },
+// Dialogue images (1.jpg - 12.jpg)
+const dialogueImages = [
+  'Percakapan/1.jpg',
+  'Percakapan/2.jpg',
+  'Percakapan/3.jpg',
+  'Percakapan/4.jpg',
+  'Percakapan/5.jpg',
+  'Percakapan/6.jpg',
+  'Percakapan/7.jpg',
+  'Percakapan/8.jpg',
+  'Percakapan/9.jpg',
+  'Percakapan/10.jpg',
+  'Percakapan/11.jpg',
+  'Percakapan/12.jpg',
 ];
+
+const birthdayMessage = `Di bawah langit yang sama, tempat bintang-bintang berbisik seperti syair para pujangga di masa Tiga Kerajaan, hari ini aku merayakan kelahiranmu, hari ketika dunia diam-diam menjadi lebih hangat dan penuh arti.
+
+Selamat ulang tahun, cintaku.
+
+Seandainya aku seorang jenderal besar, akan kuhadiahkan padamu negeri yang damai tanpa peperangan. Seandainya aku seorang penyair istana, akan kutulis ribuan bait tentang keindahan namamu di atas sutra yang tak lekang oleh waktu. Namun aku hanyalah seseorang yang berjalan di antara musim dan kenangan, membawa hati yang sepenuhnya tertuju padamu.
+
+Aku tahu persembahanku sederhana, hanya sebuah permainan yang lahir dari malam-malam panjang dan harapan yang tak pernah padam. Setiap langkah dalam kisahnya adalah bisikan rinduku, setiap akhir perjalanannya adalah doa agar senyummu selalu terjaga.
+
+Maafkan aku, karena aku hanya bisa memberimu game ini.
+
+Semoga saat kau memainkannya, kau dapat merasakan betapa berharganya dirimu di hatiku, laksana bulan purnama yang menerangi perjalanan seorang pengelana di malam sunyi. Di antara gemuruh dunia dan pergantian zaman, engkaulah ketenangan yang selalu kucari.
+
+Bila waktu adalah sungai panjang yang mengalir tanpa henti, izinkan aku berjalan bersamamu di tepinya, melewati musim semi yang berbunga dan musim gugur yang keemasan, hingga kisah kita dikenang seperti legenda yang diceritakan dengan penuh kasih oleh generasi mendatang.
+
+Selamat ulang tahun. Terima kasih telah hadir dalam hidupku, seperti puisi yang akhirnya menemukan maknanya.
+
+Zhao Boyan Shanba`;
 
 function stopAllAudio() {
   [battleBgm, encyclopediaBgm, dialogueBgm, rewardBgm, sfxEnemyAttack, sfxEnemyHit, sfxEnemyLose].forEach((audio) => {
@@ -404,7 +362,6 @@ function answerQuestion(selected, answer) {
   setTimeout(askQuestion, 2000);
 }
 
-// ─── WIN ANIMATION ────────────────────────────────────────────────────────────
 function showWinAnimation(callback) {
   heroIdle.classList.add('win-center');
 
@@ -424,7 +381,6 @@ function showWinAnimation(callback) {
   }, 3000);
 }
 
-// ─── REWARD ───────────────────────────────────────────────────────────────────
 function showRewardAndProceed() {
   const conf = battleConfig[currentBattle];
   rewardImg.src = conf.rewardImg;
@@ -529,7 +485,18 @@ async function showEncyclopediaDetail(type, key) {
   encyText.textContent = await loadText(item.textPath);
 }
 
-function fadeOutDialogueBgmAndFinish() {
+// ─── DIALOGUE (Simplified - just image switching) ────────────────────────────
+function renderDialogueStep() {
+  if (dialogueIndex >= dialogueImages.length) {
+    dialogueNext.disabled = true;
+    fadeOutDialogueBgmAndGoToBirthday();
+    return;
+  }
+
+  dialogueImage.src = dialogueImages[dialogueIndex];
+}
+
+function fadeOutDialogueBgmAndGoToBirthday() {
   let volume = dialogueBgm.volume;
   const timer = setInterval(() => {
     volume -= 0.05;
@@ -538,8 +505,10 @@ function fadeOutDialogueBgmAndFinish() {
       dialogueBgm.pause();
       dialogueBgm.currentTime = 0;
       dialogueBgm.volume = 0.45;
+      
+      // Play ending video, then birthday screen
       playEndingVideo('Musou_mode/Tamat/Sesudah_ngobrol.mp4', () => {
-        transitionTo('menu-screen');
+        showBirthdayScreen();
       });
       return;
     }
@@ -547,39 +516,8 @@ function fadeOutDialogueBgmAndFinish() {
   }, 120);
 }
 
-function renderDialogueStep() {
-  const item = activeDialogue[dialogueIndex];
-  if (!item) {
-    dialogueNext.disabled = true;
-    fadeOutDialogueBgmAndFinish();
-    return;
-  }
-
-  // Update gambar karakter sesuai ekspresi dialog
-  dialogueZhao.src = item.zhao;
-  dialogueAnya.src = item.anya;
-
-  // Update bubble sesuai speaker
-  dialogueBubble.src = item.speaker === 'zhao'
-    ? 'Musou_mode/Tamat/Zhao_bubble.png'
-    : 'Musou_mode/Tamat/Anya_buble.png';
-
-  // Update teks
-  dialogueText.textContent = item.text;
-
-  // Yang ngomong jadi full body besar (active-speaker), yang diam jadi portrait kecil
-  if (item.speaker === 'zhao') {
-    dialogueZhao.classList.add('active-speaker');
-    dialogueAnya.classList.remove('active-speaker');
-  } else {
-    dialogueAnya.classList.add('active-speaker');
-    dialogueZhao.classList.remove('active-speaker');
-  }
-}
-
 function startDialogueScene() {
   transitionTo('dialogue-screen');
-  activeDialogue = dialogueScript;
   dialogueIndex = 0;
   dialogueNext.disabled = false;
 
@@ -588,6 +526,55 @@ function startDialogueScene() {
   dialogueBgm.play().catch(() => {});
 
   renderDialogueStep();
+}
+
+// ─── BIRTHDAY SCREEN ──────────────────────────────────────────────────────────
+function typewriterEffect(text, element, speed = 30, callback) {
+  let i = 0;
+  element.textContent = '';
+
+  function type() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    } else {
+      if (typeof callback === 'function') callback();
+    }
+  }
+  type();
+}
+
+function showBirthdayScreen() {
+  transitionTo('birthday-screen', () => {
+    // Start background music again
+    dialogueBgm.volume = 0.45;
+    dialogueBgm.currentTime = 0;
+    dialogueBgm.play().catch(() => {});
+
+    // Start typewriter effect
+    typewriterEffect(birthdayMessage, letterText, 30, () => {
+      // After typewriter finishes, show button
+      btnBackToMenu.classList.remove('hidden');
+    });
+  });
+}
+
+function fadeOutBirthdayBgmAndReturnToMenu() {
+  let volume = dialogueBgm.volume;
+  const timer = setInterval(() => {
+    volume -= 0.05;
+    if (volume <= 0) {
+      clearInterval(timer);
+      dialogueBgm.pause();
+      dialogueBgm.currentTime = 0;
+      dialogueBgm.volume = 0.45;
+      transitionTo('menu-screen');
+      pendingEndingSequence = false;
+      return;
+    }
+    dialogueBgm.volume = volume;
+  }, 120);
 }
 
 function playEndingVideo(src, onEnded) {
@@ -651,6 +638,10 @@ rewardImg.addEventListener('click', () => {
 dialogueNext.addEventListener('click', () => {
   dialogueIndex += 1;
   renderDialogueStep();
+});
+
+btnBackToMenu.addEventListener('click', () => {
+  fadeOutBirthdayBgmAndReturnToMenu();
 });
 
 openingScreen.addEventListener('click', skipOpening);
